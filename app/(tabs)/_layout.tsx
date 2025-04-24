@@ -1,7 +1,7 @@
 import '~/global.css';
 
 import { DarkTheme, DefaultTheme, Theme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
+import { Tabs } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as React from 'react';
 import { Platform } from 'react-native';
@@ -10,11 +10,16 @@ import { useColorScheme } from '~/lib/useColorScheme';
 import { PortalHost } from '@rn-primitives/portal';
 import { ThemeToggle } from '~/components/ThemeToggle';
 import { setAndroidNavigationBar } from '~/lib/android-navigation-bar';
+import { Home } from 'lucide-react-native';
+import { CircleUser } from 'lucide-react-native';
+import { Sparkles } from 'lucide-react-native';
+import { Film } from 'lucide-react-native';
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
   colors: NAV_THEME.light,
 };
+
 const DARK_THEME: Theme = {
   ...DarkTheme,
   colors: NAV_THEME.dark,
@@ -36,7 +41,6 @@ export default function RootLayout() {
     }
 
     if (Platform.OS === 'web') {
-      // Adds the background color to the html element to prevent white background on overscroll.
       document.documentElement.classList.add('bg-background');
     }
     setAndroidNavigationBar(colorScheme);
@@ -51,15 +55,48 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
       <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
-      <Stack>
-        <Stack.Screen
-          name='index'
+      <Tabs
+        screenOptions={{
+          tabBarShowLabel: false, // This hides all labels
+          headerRight: () => <ThemeToggle />,
+        }}
+      >
+        <Tabs.Screen
+          name="index"
           options={{
-            title: 'Starter Base',
-            headerRight: () => <ThemeToggle />,
-          }}
-        />
-      </Stack>
+            title: 'Home',
+            tabBarIcon: ({ color, size }) => (
+              <Home color={color} size={size} />
+            ),
+          }}        />
+        <Tabs.Screen
+          name="explore"
+          options={{
+            title: 'Explore',
+            tabBarIcon: ({ color, size }) => (
+              <Sparkles color={color} size={size} />
+            ),
+          }}  />
+        <Tabs.Screen
+          name="films"
+          options={{
+            title: 'Films',
+            tabBarIcon: ({ color, size }) => (
+              <Film color={color} size={size} />
+            ),
+          }}  />
+        <Tabs.Screen
+          name="profile"
+          options={{
+            title: 'Profile',
+            tabBarIcon: ({ color, size }) => (
+              <CircleUser color={color} size={size} />
+            ),
+          }}  />
+        {/* You can add more tabs like below */}
+        {/* <Tabs.Screen name="settings" options={{ title: 'Settings' }} /> */}
+      </Tabs>
+      
       <PortalHost />
     </ThemeProvider>
   );
