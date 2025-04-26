@@ -36,7 +36,6 @@ const AccordionItem = React.forwardRef<AccordionPrimitive.ItemRef, AccordionPrim
       <Animated.View className={'overflow-hidden'} layout={LinearTransition.duration(200)}>
         <AccordionPrimitive.Item
           ref={ref}
-          className={cn('border-b border-border', className)}
           value={value}
           {...props}
         />

@@ -1,16 +1,11 @@
-import { StyleSheet, View, FlatList } from 'react-native'
-import React, { useCallback, useState, useEffect } from 'react'
+import { StyleSheet, View, FlatList, Image } from 'react-native';
+import React, { useCallback, useState, useEffect } from 'react';
 import axios from 'axios';
 import { Text } from '~/components/ui/text';
-import MovieCard from '@/components/ui/moviecard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
-import { fetchPopularMovies, fetchTopRatedMovies } from '@/services/api/movieService'; 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '~/components/ui/accordion';
+import { fetchPopularMovies, fetchTopRatedMovies } from '@/services/api/movieService';
+import MovieAccordion from '~/components/ui/movieaccordion'; // Import the new component
+import { useTheme } from '@react-navigation/native';
 
 interface Movie {
   id: number;
@@ -25,12 +20,7 @@ const index = () => {
   const [popularMovies, setPopularMovies] = useState<Movie[]>([]);
   const [topRatedMovies, setTopRatedMovies] = useState<Movie[]>([]);
   const [activeTab, setActiveTab] = useState<'popular' | 'top'>('popular');
-
-  const handleChange = useCallback(
-    (value: number) => setRating((prevRating) => Math.round((prevRating + value) * 5) / 10),
-    []
-  );
-  const [rating, setRating] = useState(0);
+  const { colors } = useTheme();
 
   useEffect(() => {
     const loadPopularMovies = async () => {
@@ -63,21 +53,15 @@ const index = () => {
   };
 
   const renderMovieCard = useCallback(({ item }: { item: Movie }) => (
-    <MovieCard
-      title={item.title}
-      description={item.overview || 'No overview available.'}
-      rating={item.vote_average || 0}
-      year={item.release_date?.substring(0, 4)}
-      poster_path={item.poster_path}
-    />
-  ), []); // Empty dependency array means this function will only be created once
+    <MovieAccordion movie={item} />
+  ), []);
 
   return (
-    <View className="flex-1 p-6">
+    <View className="flex-1 bg-secondary/30 p-6">
       <Tabs
         value={activeTab}
         onValueChange={handleTabChange}
-        className=" max-w-[400px] mx-auto flex-col gap-6"
+        className="w-full max-w-[500px] mx-auto flex-col gap-6"
       >
         <TabsList className="flex-row w-full">
           <TabsTrigger value="popular" className="flex-1">
@@ -87,8 +71,8 @@ const index = () => {
             <Text>Top</Text>
           </TabsTrigger>
         </TabsList>
-  
-        <TabsContent value="popular" className="flex-1">
+
+        <TabsContent value="popular">
           <FlatList
             data={popularMovies}
             keyExtractor={(item) => item.id.toString()}
@@ -96,8 +80,8 @@ const index = () => {
             ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
           />
         </TabsContent>
-  
-        <TabsContent value="top" className="flex-1">
+
+        <TabsContent value="top">
           <FlatList
             data={topRatedMovies}
             keyExtractor={(item) => item.id.toString()}
@@ -109,7 +93,6 @@ const index = () => {
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({});
 
