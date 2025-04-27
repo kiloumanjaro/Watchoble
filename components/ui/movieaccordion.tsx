@@ -39,14 +39,14 @@ const MovieAccordion: React.FC<MovieAccordionProps> = ({ movie }) => {
       defaultValue={['item-1']}
       className="m-2"
     >
-      <AccordionItem value="item-1" className="bg-white dark:bg-red rounded-[10] gap-4 p-3 shadow">
-        <AccordionTrigger className="pt-0 pb-0 flex-row items-center">
+      <AccordionItem value="item-1" className="bg-white dark:bg-black rounded-[10] p-3 gap-3">
+        <AccordionTrigger className="pt-0 pb-0 pr-5 flex-row items-center">
           <Image
             source={{ uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}` }}
             style={{ width: 80, height: 120 }}
             resizeMode="cover"
           />
-          <View className="justify-start ml-4 flex-1 gap-1">
+          <View className="justify-start ml-5 flex-1 gap-1">
             <View>
               <Text>{movie.title}</Text>
               <Text className='text-sm font-thin'>{movie.release_date?.substring(0, 4)}</Text>
@@ -66,7 +66,7 @@ const MovieAccordion: React.FC<MovieAccordionProps> = ({ movie }) => {
             </View>
           </View>
         </AccordionTrigger>
-        <AccordionContent className="rounded-md p-3">
+        <AccordionContent className="rounded-md p-3 bg-[#f8f8f8] dark:bg-[#222222]">
           <Text>{movie.overview}</Text>
         </AccordionContent>
       </AccordionItem>
