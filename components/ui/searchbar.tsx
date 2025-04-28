@@ -31,7 +31,7 @@ const SearchBar = ({ onSearch }: { onSearch: (query: string) => void }) => {
           <Search size={20} color={colors.text} />
           <TextInput
             className="flex-1 ml-2 text-base"
-            placeholder="Search Hypelists and Users"
+            placeholder="Search"
             placeholderTextColor={colors.text + '88'} // 88 = 50% opacity
             value={searchQuery}
             onChangeText={handleSearchChange}

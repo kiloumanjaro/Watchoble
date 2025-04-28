@@ -1,42 +1,57 @@
 import React from 'react';
-import { View, Image } from 'react-native';
+import { View } from 'react-native';
 import { Text } from '~/components/ui/text';
-import {
-    Card,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-} from '~/components/ui/card';
+import { Card } from '~/components/ui/card';
 import { Ellipsis } from 'lucide-react-native';
-import { MenuProvider } from 'react-native-popup-menu';
-
+import { Menu, MenuOptions, MenuOption, MenuTrigger } from 'react-native-popup-menu';
+import { useTheme } from '@react-navigation/native';
 
 type GenreProps = {
     name: string;
     items: number;
+};
+
+const Genre: React.FC<GenreProps> = ({ name, items }) => {
+    const { colors } = useTheme(); // get the current theme colors (light/dark)
+
+    const menuOptionsStyles = {
+        optionsContainer: {
+            backgroundColor: colors.card, // dynamic card color
+            borderRadius: 12,
+            paddingVertical: 8,
+            elevation: 0, 
+            shadowColor: 'transparent',
+            width: 150,
+        },
     };
 
-    const Genre: React.FC<GenreProps> = ({ name, items}) => {
-
     return (
-        <Card className='w-96 h-56 p-5 flex justify-between'>
+        <Card className='w-96 h-56 p-5 flex justify-between m-3'>
             <View className='w-full items-end'>
-            <Ellipsis size={30} color="#4ade80" />
+                <Menu>
+                    <MenuTrigger>
+                        <Ellipsis size={30} color={colors.primary} />
+                    </MenuTrigger>
+                    <MenuOptions customStyles={menuOptionsStyles}>
+                        <MenuOption onSelect={() => alert('Share pressed')}>
+                            <Text className="text-base px-4 py-2" style={{ color: colors.text }}>Share</Text>
+                        </MenuOption>
+                        <MenuOption onSelect={() => alert('Edit pressed')}>
+                            <Text className="text-base px-4 py-2" style={{ color: colors.text }}>Edit</Text>
+                        </MenuOption>
+                        <MenuOption onSelect={() => alert('Delete pressed')}>
+                            <Text className="text-base px-4 py-2" style={{ color: 'red' }}>Delete</Text>
+                        </MenuOption>
+                    </MenuOptions>
+                </Menu>
             </View>
 
-            <View className='w-full'>
+            <View className='w-fullp-2 rounded'>
                 <Text className='text-sm'>{items} items</Text>
                 <Text className='text-2xl font-semibold'>{name}</Text>
-                
             </View>
-
         </Card>
-
-        
-        
     );
 };
 
-
 export default Genre;
-
