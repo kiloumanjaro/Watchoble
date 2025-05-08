@@ -19,7 +19,7 @@ export interface Movie {
   
 }
 
-const DESIRED_MOVIE_COUNT = 2;
+const DESIRED_MOVIE_COUNT = 10;
 
 export const fetchPopularMovies = async () => {
   try {

@@ -1,4 +1,4 @@
-import { View, FlatList} from 'react-native';
+import { View, FlatList, ScrollView} from 'react-native';
 import React, { useCallback, useState } from 'react';
 import { Text } from '~/components/ui/text';
 import { useRoute, RouteProp, DarkTheme, DefaultTheme, ThemeProvider, Theme } from '@react-navigation/native';
@@ -54,20 +54,22 @@ const Playlist = () => {
   );
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DARK_THEME : LIGHT_THEME}>
-    <View className="flex-1 bg-secondary/30">
-
+    <ScrollView className='flex-1 bg-secondary/30' showsVerticalScrollIndicator={false}>
+    <View className="flex-1">
       <PlaylistCover name={genre}/>
-      <Text>{movieId}</Text>
-      <View className='p-2'>
+      <View className='pl-2 pr-2'>
         <FlatList
           data={genreMovies}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => <MovieAccordion movie={item} />}
           ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
+          scrollEnabled={false}
+          showsVerticalScrollIndicator={false} 
         />
       </View>
 
     </View>
+    </ScrollView>
     </ThemeProvider>
   );
 };

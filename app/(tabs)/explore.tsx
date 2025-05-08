@@ -1,4 +1,4 @@
-import { StyleSheet, View, FlatList} from 'react-native';
+import { StyleSheet, View, ScrollView, FlatList} from 'react-native';
 import React, { useCallback, useState, useEffect } from 'react';
 import { Text } from '~/components/ui/text';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
@@ -54,7 +54,8 @@ const explore = () => {
   ), []);
 
   return (
-    <View className="flex-1 bg-secondary/30 p-6">
+    <ScrollView className='flex-1 bg-secondary/30' showsVerticalScrollIndicator={false}>
+    <View className="flex-1 p-6">
       <Tabs
         value={activeTab}
         onValueChange={handleTabChange}
@@ -75,6 +76,8 @@ const explore = () => {
             keyExtractor={(item) => item.id.toString()}
             renderItem={renderMovieCard}
             ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
+            scrollEnabled={false}
+            showsVerticalScrollIndicator={false} 
           />
         </TabsContent>
 
@@ -84,10 +87,13 @@ const explore = () => {
             keyExtractor={(item) => item.id.toString()}
             renderItem={renderMovieCard}
             ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
+            scrollEnabled={false}
+            showsVerticalScrollIndicator={false} 
           />
         </TabsContent>
       </Tabs>
     </View>
+    </ScrollView>
   );
 };
 

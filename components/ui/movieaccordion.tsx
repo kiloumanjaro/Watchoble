@@ -36,14 +36,14 @@ const MovieAccordion: React.FC<MovieAccordionProps> = ({ movie }) => {
     <Accordion
       type="multiple"
       collapsible
-      defaultValue={['item-1']}
+      defaultValue={undefined}
       className="m-2"
     >
       <AccordionItem value="item-1" className="bg-white dark:bg-black rounded-[10] p-3 gap-3">
         <AccordionTrigger className="pt-0 pb-0 pr-5 flex-row items-center">
           <Image
             source={{ uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}` }}
-            style={{ width: 80, height: 120 }}
+            style={{ width: 60, height: 90 }}
             resizeMode="cover"
           />
           <View className="justify-start ml-5 flex-1 gap-1">

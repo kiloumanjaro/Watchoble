@@ -41,8 +41,6 @@ const index = () => {
     Music: 10402,
     Mystery: 9648,
     Romance: 10749,
-    'Science Fiction': 878,
-    'TV Movie': 10770,
     Thriller: 53,
     War: 10752,
     Western: 37,
@@ -87,7 +85,7 @@ const index = () => {
       <View className='mt-4'>
         <SearchBar onSearch={handleSearch} />
       </View>
-      <PlaylistCover name='test'/>
+
       <View className="mt-4">
         <Text className='text-xl font-semibold ml-5'>Film Genres</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
