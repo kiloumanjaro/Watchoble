@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import { fetchTrendingPeople } from '@/services/api/peopleService';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '~/types/types'; // adjust import path
+import PlaylistCover from '~/components/ui/playlistcover';
 
 type GenreDetailsNavigationProp = NativeStackNavigationProp<RootStackParamList, 'playlist'>;
 
@@ -86,7 +87,7 @@ const index = () => {
       <View className='mt-4'>
         <SearchBar onSearch={handleSearch} />
       </View>
-
+      <PlaylistCover name='test'/>
       <View className="mt-4">
         <Text className='text-xl font-semibold ml-5'>Film Genres</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>

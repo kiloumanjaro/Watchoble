@@ -65,7 +65,7 @@ export const fetchGenreMovies = async (genreId: number) => {
     });
     return (response.data.results as Movie[]).slice(0, DESIRED_MOVIE_COUNT);
   } catch (error: any) {
-    console.error('yawa', error);
+    console.error('Error fetching movies for that genre', error);
     throw error;
   }
 };

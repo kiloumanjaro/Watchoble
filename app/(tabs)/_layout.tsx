@@ -93,6 +93,7 @@ export default function RootLayout() {
               <CircleUser color={color} size={size} />
             ),
           }}  />
+
         {/* You can add more tabs like below */}
         {/* <Tabs.Screen name="settings" options={{ title: 'Settings' }} /> */}
       </Tabs>
