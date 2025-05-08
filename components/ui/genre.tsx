@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Pressable } from 'react-native';
 import { Text } from '~/components/ui/text';
 import { Card } from '~/components/ui/card';
 import { Ellipsis } from 'lucide-react-native';
@@ -9,10 +9,14 @@ import { useTheme } from '@react-navigation/native';
 type GenreProps = {
     name: string;
     items: number;
-};
+    genre: string;  // Accept genre as a prop
+    movieId: number;  // Accept movieId as a prop
+    onPress: (genre: string, movieId: number) => void;  // onPress should expect both genre and movieId
+  };
+  
 
-const Genre: React.FC<GenreProps> = ({ name, items }) => {
-    const { colors } = useTheme(); // get the current theme colors (light/dark)
+  const Genre: React.FC<GenreProps> = ({ name, items, genre, movieId, onPress }) => {
+    const { colors } = useTheme();
 
     const menuOptionsStyles = {
         optionsContainer: {
@@ -25,7 +29,12 @@ const Genre: React.FC<GenreProps> = ({ name, items }) => {
         },
     };
 
+    const handlePress = () => {
+        onPress(genre, movieId);  // Call onPress with both genre and movieId
+      };
+
     return (
+        <Pressable onPress={handlePress}>
         <Card className='w-96 h-56 p-5 flex justify-between m-3'>
             <View className='w-full items-end'>
                 <Menu>
@@ -51,6 +60,7 @@ const Genre: React.FC<GenreProps> = ({ name, items }) => {
                 <Text className='text-2xl font-semibold'>{name}</Text>
             </View>
         </Card>
+        </Pressable>
     );
 };
 
