@@ -12,6 +12,7 @@ import { Text } from '~/components/ui/text';
 import { FileText } from 'lucide-react-native';
 import { MessageSquareQuote } from 'lucide-react-native';
 import { ChevronRight } from 'lucide-react-native';
+import { useRouter } from 'expo-router';
 
 interface Movie {
   id: number;
@@ -34,6 +35,16 @@ const MovieAccordion: React.FC<MovieAccordionProps> = ({ movie }) => {
     (value: number) => setRating(Math.round(value * 10) / 10),
     []
   );
+  
+  const router = useRouter();
+
+  // Function to handle navigation to the Reviews page
+  const goToReviews = () => {
+    router.push({
+      pathname: '/reviews',
+      params: { movie: JSON.stringify(movie) }, // You must stringify objects
+    });
+  };
 
   return (
     <Accordion
@@ -46,7 +57,7 @@ const MovieAccordion: React.FC<MovieAccordionProps> = ({ movie }) => {
         <AccordionTrigger className="pt-0 pb-0 pr-5 flex-row items-center">
           <Image
             source={{ uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}` }}
-            style={{ width: 63, height: 93, borderRadius: 3}}
+            style={{ width: 63, height: 93, borderRadius: 3 }}
             resizeMode="cover"
           />
           <View className={`ml-5 flex-1 ${isLongTitle ? 'h-[90%]' : 'h-3/4'} flex-col justify-start`}>
@@ -71,7 +82,7 @@ const MovieAccordion: React.FC<MovieAccordionProps> = ({ movie }) => {
             </View>
           </View>
         </AccordionTrigger>
-                  
+
         <AccordionContent className="rounded-md p-4 bg-[#f8f8f8] dark:bg-[#222222] text-xl gap-3">
           <View className='flex-row items-center gap-2'>
             <FileText strokeWidth={1.5} size={18} color={colors.primary}/>
@@ -80,20 +91,17 @@ const MovieAccordion: React.FC<MovieAccordionProps> = ({ movie }) => {
           <Text className='text-sm'>{movie.overview}</Text>
         </AccordionContent>
 
-        <TouchableOpacity>
-        <AccordionContent className="rounded-md p-4 bg-[#f8f8f8] dark:bg-[#222222] text-xl gap-3">
-          <View className="flex-row justify-between"> 
-    
-            <View className='flex-row items-center gap-2'>
-              <MessageSquareQuote strokeWidth={1.5} size={18} color={colors.primary}/>
-              <Text className='text-base'>Reviews</Text>
+        <TouchableOpacity onPress={goToReviews}>
+          <AccordionContent className="rounded-md p-4 bg-[#f8f8f8] dark:bg-[#222222] text-xl gap-3">
+            <View className="flex-row justify-between"> 
+              <View className='flex-row items-center gap-2'>
+                <MessageSquareQuote strokeWidth={1.5} size={18} color={colors.primary}/>
+                <Text className='text-base'>Reviews</Text>
+              </View>
+              <ChevronRight strokeWidth={1.5} size={18} color={colors.primary}/>
             </View>
-            <ChevronRight strokeWidth={1.5} size={18} color={colors.primary}/>
-          </View>
-
-        </AccordionContent>
+          </AccordionContent>
         </TouchableOpacity>
-
       </AccordionItem>
     </Accordion>
   );

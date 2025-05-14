@@ -1,60 +1,45 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, FlatList, Text } from 'react-native';
-import { useRoute } from '@react-navigation/native';
+import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import React from 'react';
+import { useLocalSearchParams } from 'expo-router';
 
-interface Review {
-  id: string;
-  author: string;
-  content: string;
-}
+const Reviews = () => {
+  const params = useLocalSearchParams();
 
-const ReviewsPage = () => {
-  const route = useRoute();
-  const { movieId } = route.params; // Movie ID passed from MovieAccordion
-  const [reviews, setReviews] = useState<Review[]>([]);
+  const movieParam = Array.isArray(params.movie) ? params.movie[0] : params.movie;
+  const movie = movieParam ? JSON.parse(movieParam) : null;
 
-  useEffect(() => {
-    // Fetch reviews from an API (e.g., TMDB or another source)
-    fetch(`https://api.themoviedb.org/3/movie/${movieId}/reviews?api_key=YOUR_API_KEY`)
-      .then(response => response.json())
-      .then(data => {
-        setReviews(data.results);
-      })
-      .catch(error => console.error('Error fetching reviews:', error));
-  }, [movieId]);
+  if (!movie) {
+    return (
+      <View style={styles.container}>
+        <Text>No movie data found</Text>
+      </View>
+    );
+  }
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={reviews}
-        keyExtractor={item => item.id}
-        renderItem={({ item }) => (
-          <View style={styles.reviewContainer}>
-            <Text style={styles.author}>{item.author}</Text>
-            <Text style={styles.content}>{item.content}</Text>
-          </View>
-        )}
-      />
-    </View>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.title}>{movie.title}</Text>
+      <Text style={styles.json}>
+        {JSON.stringify(movie, null, 2)}
+      </Text>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     padding: 16,
   },
-  reviewContainer: {
-    marginBottom: 16,
+  title: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 12,
   },
-  author: {
-    fontWeight: 'bold',
-    marginBottom: 4,
-  },
-  content: {
+  json: {
+    fontFamily: 'monospace',
     fontSize: 14,
-    color: '#555',
+    color: '#333',
   },
 });
 
-export default ReviewsPage;
+export default Reviews;
