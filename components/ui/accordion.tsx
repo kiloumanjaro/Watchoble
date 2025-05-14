@@ -63,7 +63,6 @@ const AccordionTrigger = React.forwardRef<
   }));
 
   return (
-    <TextClassContext.Provider value='native:text-lg font-medium web:group-hover:underline'>
       <AccordionPrimitive.Header className='flex'>
         <AccordionPrimitive.Trigger ref={ref} {...props} asChild>
           <Trigger
@@ -79,7 +78,6 @@ const AccordionTrigger = React.forwardRef<
           </Trigger>
         </AccordionPrimitive.Trigger>
       </AccordionPrimitive.Header>
-    </TextClassContext.Provider>
   );
 });
 AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName;
@@ -90,7 +88,6 @@ const AccordionContent = React.forwardRef<
 >(({ className, children, ...props }, ref) => {
   const { isExpanded } = AccordionPrimitive.useItemContext();
   return (
-    <TextClassContext.Provider value='native:text-lg'>
       <AccordionPrimitive.Content
         className={cn(
           'overflow-hidden text-sm web:transition-all',
@@ -101,7 +98,6 @@ const AccordionContent = React.forwardRef<
       >
         <InnerContent className={cn('pb-4', className)}>{children}</InnerContent>
       </AccordionPrimitive.Content>
-    </TextClassContext.Provider>
   );
 });
 
