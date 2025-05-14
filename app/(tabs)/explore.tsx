@@ -55,7 +55,7 @@ const explore = () => {
 
   return (
     <ScrollView className='flex-1 bg-secondary/30' showsVerticalScrollIndicator={false}>
-    <View className="flex-1 p-6">
+    <View className="flex-1 p-2">
       <Tabs
         value={activeTab}
         onValueChange={handleTabChange}

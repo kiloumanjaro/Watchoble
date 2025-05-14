@@ -1,4 +1,4 @@
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 import React, { useCallback, useState } from 'react';
 import {
   Accordion,
@@ -29,7 +29,7 @@ interface MovieAccordionProps {
 const MovieAccordion: React.FC<MovieAccordionProps> = ({ movie }) => {
   const [rating, setRating] = useState(0);
   const { colors } = useTheme();
-
+  const isLongTitle = movie.title.length > 23; // adjust threshold as needed
   const handleChange = useCallback(
     (value: number) => setRating(Math.round(value * 10) / 10),
     []
@@ -40,18 +40,18 @@ const MovieAccordion: React.FC<MovieAccordionProps> = ({ movie }) => {
       type="multiple"
       collapsible
       defaultValue={undefined}
-      className="m-2"
+      className="mt-1 ml-2 mr-2 mb-1"
     >
       <AccordionItem value="item-1" className="bg-card p-3 gap-3">
         <AccordionTrigger className="pt-0 pb-0 pr-5 flex-row items-center">
           <Image
             source={{ uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}` }}
-            style={{ width: 60, height: 90, borderRadius: 3}}
+            style={{ width: 63, height: 93, borderRadius: 3}}
             resizeMode="cover"
           />
-          <View className="ml-5 flex-1 h-3/4 flex-col justify-start">
+          <View className={`ml-5 flex-1 ${isLongTitle ? 'h-[90%]' : 'h-3/4'} flex-col justify-start`}>
             <View className="flex-grow">
-              <Text className='text-lg font-medium'>{movie.title}</Text>
+              <Text className='text-lg font-medium' style={{ lineHeight: 20 }}>{movie.title}</Text>
               <Text className='text-sm font-thin'>{movie.release_date?.substring(0, 4)}</Text>
             </View>
             <View className='flex-row gap-1'>
@@ -80,15 +80,19 @@ const MovieAccordion: React.FC<MovieAccordionProps> = ({ movie }) => {
           <Text className='text-sm'>{movie.overview}</Text>
         </AccordionContent>
 
+        <TouchableOpacity>
         <AccordionContent className="rounded-md p-4 bg-[#f8f8f8] dark:bg-[#222222] text-xl gap-3">
           <View className="flex-row justify-between"> 
+    
             <View className='flex-row items-center gap-2'>
               <MessageSquareQuote strokeWidth={1.5} size={18} color={colors.primary}/>
               <Text className='text-base'>Reviews</Text>
             </View>
             <ChevronRight strokeWidth={1.5} size={18} color={colors.primary}/>
           </View>
+
         </AccordionContent>
+        </TouchableOpacity>
 
       </AccordionItem>
     </Accordion>
