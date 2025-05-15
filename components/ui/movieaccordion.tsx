@@ -30,7 +30,7 @@ interface MovieAccordionProps {
 const MovieAccordion: React.FC<MovieAccordionProps> = ({ movie }) => {
   const [rating, setRating] = useState(0);
   const { colors } = useTheme();
-  const isLongTitle = movie.title.length > 23; // adjust threshold as needed
+  const isLongTitle = movie.title.length > 27; // adjust threshold as needed
   const handleChange = useCallback(
     (value: number) => setRating(Math.round(value * 10) / 10),
     []
