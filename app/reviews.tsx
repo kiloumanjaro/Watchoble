@@ -3,6 +3,8 @@ import React, { useCallback, useState } from 'react';
 import { useTheme } from '@react-navigation/native';
 import { useLocalSearchParams } from 'expo-router';
 import ReviewCover from '~/components/ui/reviewcover';
+import ReviewCard from '~/components/ui/reviewcard';
+import ReviewInput from '~/components/ui/reviewinput';
 import { Text } from '~/components/ui/text';
 import { Tags } from 'lucide-react-native';
 import { History } from 'lucide-react-native';
@@ -58,8 +60,10 @@ const genreNames = movie.genre_ids
   .join(', ');
 
   return (
-    <View className='flex-1 bg-secondary/30'>
+  <ScrollView className='flex-1 bg-secondary/30 mb-24' showsVerticalScrollIndicator={false}>
+    <View>
       <ReviewCover path={movie.backdrop_path} vote_average={movie.vote_average} poster_path={movie.poster_path} />
+     
       <View className='p-6 flex-row '>
         <View className='w-3/4 pr-5 gap-2'>
           <Text className="font-semibold text-3xl ">{movie.title}</Text>
@@ -73,15 +77,16 @@ const genreNames = movie.genre_ids
           />
         </View>
       </View>
-      <View className='w-full flex-row '>
-        <Card className="flex-1 w-2/5 justify-center p-5 m-2 gap-2">
+
+      <View className='flex-row p-2'>
+        <Card className="flex-1 w-2/5 justify-center p-5 m-2 gap-2 bg-[#f8f8f8] dark:bg-[#222222]">
           <Tags strokeWidth={1.5} size={25} color={colors.text}/>
           <View>
             <Text className="text-base font-bold text-primary">Genres</Text>
             <Text className="text-sm text-foreground">{genreNames || 'N/A'}</Text>
           </View>
         </Card>
-        <Card className="flex-1  justify-center p-4 m-2 gap-2">
+        <Card className="flex-1  justify-center p-4 m-2 gap-2 bg-[#f8f8f8] dark:bg-[#222222]">
           <History strokeWidth={1.5} size={25} color={colors.text}/>
           <View>
             <Text className="text-base font-bold text-primary">Released</Text>
@@ -89,17 +94,28 @@ const genreNames = movie.genre_ids
           </View>
 
         </Card>
-        <Card className="flex-1 justify-center p-4 m-2 gap-2">
+        <Card className="flex-1 justify-center p-4 m-2 gap-2 bg-[#f8f8f8] dark:bg-[#222222]">
           <Star strokeWidth={1.5} size={25} color={colors.text}/>
           <View>
             <Text className="text-base font-bold text-primary">Ratings</Text>
             <Text className="text-sm text-foreground">{movie.vote_average || 'N/A'}</Text>
           </View>
         </Card>
-
       </View>
 
-    </View>
+      <View className='p-4'>
+        <ReviewInput/>
+        <View className='mt-3 gap-5'>
+          <View>
+            <ReviewCard username="Kint" review="Director Sam Mendes, inspired by stories from his grandfather, delivers a powerful anti-war film that is both intimate and epic. The real-time, “one-shot” camera technique (masterfully shot by Roger Deakins) gives the film an immersive quality rarely seen in war cinema." date={new Date('2024-05-01')} />
+            <ReviewCard username="Kint" review="Director Sam Mendes, inspired by stories from his grandfather, delivers a powerful anti-war film that is both intimate and epic. The real-time, “one-shot” camera technique (masterfully shot by Roger Deakins) gives the film an immersive quality rarely seen in war cinema." date={new Date('2024-05-01')} />
+          </View>
+        </View>
+ 
+      </View>
+
+    </View>    
+  </ScrollView>
   );
 };
 

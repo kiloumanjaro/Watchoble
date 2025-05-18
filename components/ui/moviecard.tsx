@@ -57,4 +57,3 @@ const MovieCard: React.FC<MovieCardProps> = ({
 
 export default MovieCard
 
-const styles = StyleSheet.create({})
