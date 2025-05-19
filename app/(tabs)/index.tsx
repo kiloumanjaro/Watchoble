@@ -10,6 +10,8 @@ import { fetchTrendingPeople } from '@/services/api/peopleService';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '~/types/types'; // adjust import path
 import PlaylistCover from '~/components/ui/playlistcover';
+import Slider from '~/components/ui/slider';
+import { ImageSlider } from '@/data/SliderData';
 
 type GenreDetailsNavigationProp = NativeStackNavigationProp<RootStackParamList, 'playlist'>;
 
@@ -81,11 +83,12 @@ const index = () => {
   );
 
   return (
-    <ScrollView className='flex-1 bg-secondary/30' showsVerticalScrollIndicator={false}>
+    <ScrollView className='flex-1 bg-secondary/30 pt-10' showsVerticalScrollIndicator={false}>
+
       <View className='mt-4'>
         <SearchBar onSearch={handleSearch} />
       </View>
-
+      <Slider itemList={ImageSlider}/>
       <View className="mt-4">
         <Text className='text-xl font-semibold ml-5'>Film Genres</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>

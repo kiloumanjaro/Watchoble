@@ -58,6 +58,7 @@ export default function RootLayout() {
       <Tabs
         screenOptions={{
           tabBarShowLabel: false, // This hides all labels
+          headerShown: false,
           headerRight: () => <ThemeToggle />,
         }}
       >
