@@ -1,4 +1,5 @@
 import { View, Image } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Text } from '~/components/ui/text';
 
 type PlaylistCoverProps = {
@@ -36,13 +37,18 @@ const PlaylistCover: React.FC<PlaylistCoverProps> = ({ name }) => {
   const description = genreDescriptions[key] || 'A unique blend of sounds tailored to this genre.';
 
   return (
-    <View className='w-full h-96'>
-      <View className="w-full h-4/5 flex-col justify-end items-center">
-        <Image source={imageSource} style={{ position: 'absolute', width: '100%', height: '100%', top: 0 }} resizeMode="cover" />
-        <Text className="font-semibold text-3xl text-white mb-7">{name}</Text>
-      </View>
-      <View className='flex-1 w-full bg-[#f6f2ef] dark:bg-[#1b1b1b] px-10 py-2 justify-center'>
-        <Text className='text-sm font-light text-center'>{description}</Text>
+    <View className='w-full -max-h-screen-safe-offset-96'>
+      <Image source={imageSource} style={{ position: 'absolute', width: '100%', height: '100%', top: 0 }} resizeMode="cover" />
+
+      <LinearGradient
+        colors={['transparent', 'rgba(0, 0, 0, 1)']}
+        className="absolute top-0 right-0 bottom-0 left-0"
+      />
+      <View className="w-full h-full flex-col justify-end items-center">
+        <Text className="font-semibold text-3xl text-white mb-3">{name}</Text>
+        <View className='w-5/6'>
+          <Text className='text-sm font-light text-center mb-10'>{description}</Text>
+        </View>
       </View>
     </View>
   );
