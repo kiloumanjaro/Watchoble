@@ -8,19 +8,19 @@ export type ImageSliderType = {
 
 export const ImageSlider = [
   {
-    id: '1',
+    id: 'Beetle Juice (2004)',
     image: require('~/assets/images/beetle-juice.png'),
   },
   {
-    id: '2',
+    id: 'Breaking Bad (2008)',
     image: require('~/assets/images/breaking-bad.png')
   },
   {
-    id: '3',
+    id: 'Alien Romulus (2024)',
     image: require('~/assets/images/alien-romulus.png'),
   },
   {
-    id: '4',
+    id: 'Jurassic (2018)',
     image: require('~/assets/images/jurassic.png'),
   },
 ];

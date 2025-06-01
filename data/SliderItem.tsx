@@ -1,5 +1,6 @@
-import { View, Text, Image, StyleSheet, Dimensions } from 'react-native'
+import { View, Image, StyleSheet, Dimensions } from 'react-native'
 import React from 'react'
+import { Text } from '~/components/ui/text';
 import { ImageSliderType } from '~/data/SliderData';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { Extrapolation, interpolate, SharedValue, useAnimatedStyle } from 'react-native-reanimated';
@@ -40,15 +41,10 @@ export const SliderItem = ({item, index, scrollX}: Props) => {
     return (
         <Animated.View style={styles.itemContainer}>
             <Image source={item.image} style={{width:width, height:480}} />
-            <LinearGradient colors={['transparent', 'rgba(0,0,0,0.8)']} style={styles.background}>
-            <View className="flex-1 justify-end items-center flex-col">
-                <Text className="mb-20"></Text>
-                <Text className="mb-20">{item.id}</Text>
-                <Text className="mb-20">{item.id}</Text>
+            <LinearGradient className='flex-1 p-20' colors={['transparent', 'rgba(0,0,0,0.8)']} style={styles.background}/>
+            <View className="justify-end items-center flex-col" style={styles.background}>
+                <Text className='text-base font-light'>{item.id}</Text>   
             </View>
-            </LinearGradient>
-
-
         </Animated.View>
     )
     }
@@ -65,7 +61,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         width: width, 
         height: 480,
-        padding: 20,
+        padding: 50
     }
 
 })
