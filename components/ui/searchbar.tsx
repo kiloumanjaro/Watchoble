@@ -23,7 +23,7 @@ const SearchBar = ({ onSearch }: { onSearch: (query: string) => void }) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View className="flex-row items-center px-4 pt-2">
+      <View className="flex-row items-center px-4">
         <View className="flex-row flex-1 items-center rounded-2xl px-5 py-1 bg-[#f6f2ef] dark:bg-[#2c2c2e]">
           <Search size={20} color={colors.text} />
           <TextInput

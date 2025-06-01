@@ -10,7 +10,7 @@ const TabsList = React.forwardRef<TabsPrimitive.ListRef, TabsPrimitive.ListProps
     <TabsPrimitive.List
       ref={ref}
       className={cn(
-        'web:inline-flex native:h-12 items-center justify-center gap-1 rounded-full bg-muted/40 p-1 native:px-2',
+        'h-14 items-center justify-center rounded-2xl bg-card native:px-1',
         className
       )}
       {...props}
@@ -22,21 +22,19 @@ TabsList.displayName = TabsPrimitive.List.displayName;
 const TabsTrigger = React.forwardRef<TabsPrimitive.TriggerRef, TabsPrimitive.TriggerProps>(
   ({ className, ...props }, ref) => {
     const { value } = TabsPrimitive.useRootContext();
-    const isActive = props.value === value;
-
     return (
       <TextClassContext.Provider
         value={cn(
-          'text-sm native:text-base font-medium',
-          isActive ? 'text-foreground' : 'text-muted-foreground'
+          'text-sm native:text-base font-medium text-muted-foreground',
+          value === props.value && 'text-foreground'
         )}
       >
         <TabsPrimitive.Trigger
           ref={ref}
           className={cn(
-            'inline-flex items-center justify-center shadow-none web:whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium web:ring-offset-background web:transition-all web:focus-visible:outline-none web:focus-visible:ring-2 web:focus-visible:ring-ring web:focus-visible:ring-offset-2',
+            'inline-flex items-center justify-center shadow-none web:whitespace-nowrap h-5/6 rounded-xl px-3 text-sm font-medium web:ring-offset-background web:transition-all web:focus-visible:outline-none web:focus-visible:ring-2 web:focus-visible:ring-ring web:focus-visible:ring-offset-2',
             props.disabled && 'web:pointer-events-none opacity-50',
-            props.value === value && 'bg-background shadow-lg shadow-foreground/10',
+            props.value === value && 'bg-muted shadow-lg shadow-foreground/10',
             className
           )}
           {...props}
@@ -61,4 +59,4 @@ const TabsContent = React.forwardRef<TabsPrimitive.ContentRef, TabsPrimitive.Con
 );
 TabsContent.displayName = TabsPrimitive.Content.displayName;
 
-export { Tabs, TabsContent, TabsList, TabsTrigger };
+export { Tabs, TabsContent, TabsList, TabsTrigger }; 

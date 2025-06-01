@@ -86,7 +86,7 @@ const index = () => {
     <ScrollView className='flex-1 bg-secondary/30' showsVerticalScrollIndicator={false}>
       <View className="relative flex-1 ">
         <Slider itemList={ImageSlider} />
-        <View className="absolute top-12 left-0 right-0 z-10">
+        <View className="absolute top-14 left-0 right-0 z-10">
           <SearchBar onSearch={handleSearch} />
         </View>
       </View>

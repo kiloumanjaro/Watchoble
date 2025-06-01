@@ -55,20 +55,25 @@ const explore = () => {
 
   return (
     <ScrollView className='flex-1 bg-secondary/30' showsVerticalScrollIndicator={false}>
-    <View className="flex-1 p-2 pt-12">
+    <View className="flex-1 pt-14 px-1">
       <Tabs
         value={activeTab}
         onValueChange={handleTabChange}
-        className="w-full max-w-[500px] mx-auto flex-col gap-6"
+        className=" flex-col gap-4 w-full "
+        
       >
-        <TabsList className="flex-row w-full">
-          <TabsTrigger value="popular" className="flex-1">
-            <Text>Popular</Text>
-          </TabsTrigger>
-          <TabsTrigger value="top" className="flex-1">
-            <Text>Top</Text>
-          </TabsTrigger>
-        </TabsList>
+
+        <View className='px-3'>
+          <TabsList className="flex-row self-center">
+            <TabsTrigger value="popular" className="flex-1">
+              <Text>Popular</Text>
+            </TabsTrigger>
+            <TabsTrigger value="top" className="flex-1">
+              <Text>Top</Text>
+            </TabsTrigger>
+          </TabsList>
+        </View>
+
 
         <TabsContent value="popular">
           <FlatList
