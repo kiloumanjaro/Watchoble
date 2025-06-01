@@ -9,18 +9,18 @@ export type ImageSliderType = {
 export const ImageSlider = [
   {
     id: '1',
-    image: { uri: 'https://picsum.photos/id/237/200/300' },
+    image: require('~/assets/images/beetle-juice.png'),
   },
   {
     id: '2',
-    image: { uri: 'https://picsum.photos/seed/picsum/200/300' },
+    image: require('~/assets/images/breaking-bad.png')
   },
   {
     id: '3',
-    image: { uri: 'https://picsum.photos/200/300?grayscale' },
+    image: require('~/assets/images/alien-romulus.png'),
   },
   {
     id: '4',
-    image: { uri: 'https://picsum.photos/seed/picsum/200/300' },
+    image: require('~/assets/images/jurassic.png'),
   },
 ];

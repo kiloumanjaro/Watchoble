@@ -26,7 +26,7 @@ export const Pagination = ({items, paginationIndex, scrollX}: Props) => {
                 }
             });
             return (
-                <Animated.View key={index} style={[styles.dot, pgAnimationStyle, {backgroundColor: paginationIndex === index ? '#222' : '#aaa'}]}/>
+                <Animated.View key={index} style={[styles.dot, pgAnimationStyle, {backgroundColor: paginationIndex === index ? '#e8e8e8' : '#2e2e2e'}]}/>
             );
         })}
     </View>

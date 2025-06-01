@@ -39,15 +39,20 @@ export const SliderItem = ({item, index, scrollX}: Props) => {
     });
     return (
         <Animated.View style={styles.itemContainer}>
-            <Image source={item.image} style={{width:300, height:500}} />
+            <Image source={item.image} style={{width:width, height:480}} />
             <LinearGradient colors={['transparent', 'rgba(0,0,0,0.8)']} style={styles.background}>
-            <Text>{item.id}</Text>
+            <View className="flex-1 justify-end items-center flex-col">
+                <Text className="mb-20"></Text>
+                <Text className="mb-20">{item.id}</Text>
+                <Text className="mb-20">{item.id}</Text>
+            </View>
             </LinearGradient>
 
 
         </Animated.View>
     )
     }
+
 
 const styles = StyleSheet.create({
     itemContainer: {
@@ -58,8 +63,8 @@ const styles = StyleSheet.create({
     },
     background: {
         position: 'absolute',
-        width: 300, 
-        height: 500,
+        width: width, 
+        height: 480,
         padding: 20,
     }
 

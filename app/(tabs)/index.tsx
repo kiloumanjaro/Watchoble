@@ -83,12 +83,14 @@ const index = () => {
   );
 
   return (
-    <ScrollView className='flex-1 bg-secondary/30 pt-10' showsVerticalScrollIndicator={false}>
-
-      <View className='mt-4'>
-        <SearchBar onSearch={handleSearch} />
+    <ScrollView className='flex-1 bg-secondary/30' showsVerticalScrollIndicator={false}>
+      <View className="relative flex-1 ">
+        <Slider itemList={ImageSlider} />
+        <View className="absolute top-12 left-0 right-0 z-10">
+          <SearchBar onSearch={handleSearch} />
+        </View>
       </View>
-      <Slider itemList={ImageSlider}/>
+
       <View className="mt-4">
         <Text className='text-xl font-semibold ml-5'>Film Genres</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>

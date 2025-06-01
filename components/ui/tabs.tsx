@@ -10,7 +10,7 @@ const TabsList = React.forwardRef<TabsPrimitive.ListRef, TabsPrimitive.ListProps
     <TabsPrimitive.List
       ref={ref}
       className={cn(
-        'web:inline-flex h-10 native:h-12 items-center justify-center rounded-md bg-muted p-1 native:px-1.5',
+        'web:inline-flex native:h-12 items-center justify-center gap-1 rounded-full bg-muted/40 p-1 native:px-2',
         className
       )}
       {...props}
@@ -22,11 +22,13 @@ TabsList.displayName = TabsPrimitive.List.displayName;
 const TabsTrigger = React.forwardRef<TabsPrimitive.TriggerRef, TabsPrimitive.TriggerProps>(
   ({ className, ...props }, ref) => {
     const { value } = TabsPrimitive.useRootContext();
+    const isActive = props.value === value;
+
     return (
       <TextClassContext.Provider
         value={cn(
-          'text-sm native:text-base font-medium text-muted-foreground web:transition-all',
-          value === props.value && 'text-foreground'
+          'text-sm native:text-base font-medium',
+          isActive ? 'text-foreground' : 'text-muted-foreground'
         )}
       >
         <TabsPrimitive.Trigger

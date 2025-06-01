@@ -31,13 +31,19 @@ const Slider = ({itemList} : Props) => {
         },
     });
 
-    useEffect(() => { if (isAutoPlay == true) {
+    useEffect(() => {
+    if (isAutoPlay) {
         interval.current = setInterval(() => {
-            offset.value = offset.value + width
+        offset.value = offset.value + width;
         }, 5000);
-    } else {
-        clearInterval(interval.current);
     }
+
+    return () => {
+        // Always clear interval when unmounted or isAutoPlay changes
+        if (interval.current) {
+        clearInterval(interval.current);
+        }
+    };
     }, [isAutoPlay, offset, width]);
 
     useDerivedValue(() => {
@@ -60,31 +66,34 @@ const Slider = ({itemList} : Props) => {
     ]);
 
     return (
-        <View>
-        <Animated.FlatList
-            ref={ref}
-            // data={data}
-            data={itemList}
-            keyExtractor={(item, index) => `${item.id}-${index}`}
-            renderItem={({ item, index }) => <SliderItem item={item} index={index} scrollX={scrollX}/>}
-            horizontal={true} // optional: common for sliders
-            showsHorizontalScrollIndicator={false} // optional
-            pagingEnabled
-            scrollEventThrottle={16}
-            onScroll={onScrollHandler}
-            viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
-            // onEndReached={()=> setData([...data,...itemList])}
-            // onEndReachedThreshold={0.5}
-            onScrollBeginDrag={() => {
-                setIsAutoPlay(false)
-            }}
-            onScrollEndDrag={() => {
-                setIsAutoPlay(true)
-            }}
-
-            
-        />
-        <Pagination items={itemList} scrollX={scrollX} paginationIndex={paginationIndex}/>
+        <View className="relative">
+            <Animated.FlatList
+                ref={ref}
+                // data={data}
+                data={itemList}
+                keyExtractor={(item, index) => `${item.id}-${index}`}
+                renderItem={({ item, index }) => <SliderItem item={item} index={index} scrollX={scrollX}/>}
+                horizontal={true} // optional: common for sliders
+                showsHorizontalScrollIndicator={false} // optional
+                pagingEnabled
+                scrollEventThrottle={16}
+                onScroll={onScrollHandler}
+                viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
+                // onEndReached={()=> setData([...data,...itemList])}
+                // onEndReachedThreshold={0.5}
+                onScrollBeginDrag={() => {
+                    setIsAutoPlay(false);
+                    if (interval.current) {
+                        clearInterval(interval.current);
+                    }
+                }}
+                onScrollEndDrag={() => {
+                    setIsAutoPlay(true)
+                }}
+            />
+            <View className="absolute bottom-0 left-0 right-0 z-10">
+                <Pagination items={itemList} scrollX={scrollX} paginationIndex={paginationIndex}/>
+            </View>
         </View>
     )
 }
