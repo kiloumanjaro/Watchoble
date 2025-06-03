@@ -4,6 +4,7 @@ import { Text } from '~/components/ui/text';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs';
 import { fetchPopularMovies, fetchTopRatedMovies } from '@/services/api/movieService';
 import MovieAccordion from '~/components/ui/movieaccordion';
+import PlaylistCover from '~/components/ui/playlistcover';
 
 interface Movie {
   id: number;
@@ -17,7 +18,7 @@ interface Movie {
 const explore = () => {
   const [popularMovies, setPopularMovies] = useState<Movie[]>([]);
   const [topRatedMovies, setTopRatedMovies] = useState<Movie[]>([]);
-  const [activeTab, setActiveTab] = useState<'popular' | 'top'>('popular');
+  const [activeTab, setActiveTab] = useState<'top' | 'popular'>('top');
 
   useEffect(() => {
     const loadPopularMovies = async () => {
@@ -46,7 +47,7 @@ const explore = () => {
   }, []);
 
   const handleTabChange = (value: string) => {
-    setActiveTab(value as 'popular' | 'top');
+    setActiveTab(value as 'top' | 'popular');
   };
 
   const renderMovieCard = useCallback(({ item }: { item: Movie }) => (
@@ -55,29 +56,26 @@ const explore = () => {
 
   return (
     <ScrollView className='flex-1 bg-secondary/30' showsVerticalScrollIndicator={false}>
-    <View className="flex-1 pt-14 px-1">
+    <View className="flex-1 gap-5">
+      <PlaylistCover name={'top'}/>
       <Tabs
         value={activeTab}
         onValueChange={handleTabChange}
-        className=" flex-col gap-4 w-full "
-        
+        className=" flex-col gap-4 w-full"
       >
-
         <View className='px-3'>
           <TabsList className="flex-row self-center">
-            <TabsTrigger value="popular" className="flex-1">
-              <Text>Popular</Text>
-            </TabsTrigger>
             <TabsTrigger value="top" className="flex-1">
               <Text>Top</Text>
             </TabsTrigger>
+            <TabsTrigger value="popular" className="flex-1">
+              <Text>Popular</Text>
+            </TabsTrigger>
           </TabsList>
         </View>
-
-
-        <TabsContent value="popular">
+        <TabsContent value="top">
           <FlatList
-            data={popularMovies}
+            data={topRatedMovies}
             keyExtractor={(item) => item.id.toString()}
             renderItem={renderMovieCard}
             ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
@@ -86,9 +84,9 @@ const explore = () => {
           />
         </TabsContent>
 
-        <TabsContent value="top">
+        <TabsContent value="popular">
           <FlatList
-            data={topRatedMovies}
+            data={popularMovies}
             keyExtractor={(item) => item.id.toString()}
             renderItem={renderMovieCard}
             ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
