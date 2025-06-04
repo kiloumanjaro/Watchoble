@@ -105,6 +105,7 @@ const index = () => {
                 name={genre}
                 items={30}
                 movieId={genreIdMap[genre] ?? 0}  // Pass movieId instead of genre name
+                image={require('~/assets/images/icon.png')}
                 genre={genre}  // Pass the genre name (if needed in the playlist page)
                 onPress={() => handleGenrePress(genre)}  // Handle the press
               />
