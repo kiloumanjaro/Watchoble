@@ -73,8 +73,55 @@
       review:
         'Director Sam Mendes, inspired by stories from his grandfather, delivers a powerful anti-war film that is both intimate and epic. The real-time, “one-shot” camera technique (masterfully shot by Roger Deakins) gives the film an immersive quality rarely seen in war cinema.',
       date: new Date('2024-05-01'),
+    },      
+       {
+      id: '3',
+      username: 'Kint',
+      review:
+        'Director Sam Mendes, inspired by stories from his grandfather, delivers a powerful anti-war film that is both intimate and epic. The real-time, “one-shot” camera technique (masterfully shot by Roger Deakins) gives the film an immersive quality rarely seen in war cinema.',
+      date: new Date('2024-05-01'),
+    },
+        {
+      id: '4',
+      username: 'Kint',
+      review:
+        'Director Sam Mendes, inspired by stories from his grandfather, delivers a powerful anti-war film that is both intimate and epic. The real-time, “one-shot” camera technique (masterfully shot by Roger Deakins) gives the film an immersive quality rarely seen in war cinema.',
+      date: new Date('2024-05-01'),
+    },
+        {
+      id: '5',
+      username: 'Kint',
+      review:
+        'Director Sam Mendes, inspired by stories from his grandfather, delivers a powerful anti-war film that is both intimate and epic. The real-time, “one-shot” camera technique (masterfully shot by Roger Deakins) gives the film an immersive quality rarely seen in war cinema.',
+      date: new Date('2024-05-01'),
+    },
+        {
+      id: '6',
+      username: 'Kint',
+      review:
+        'Director Sam Mendes, inspired by stories from his grandfather, delivers a powerful anti-war film that is both intimate and epic. The real-time, “one-shot” camera technique (masterfully shot by Roger Deakins) gives the film an immersive quality rarely seen in war cinema.',
+      date: new Date('2024-05-01'),
+    }, 
+        {
+      id: '7',
+      username: 'Kint',
+      review:
+        'Director Sam Mendes, inspired by stories from his grandfather, delivers a powerful anti-war film that is both intimate and epic. The real-time, “one-shot” camera technique (masterfully shot by Roger Deakins) gives the film an immersive quality rarely seen in war cinema.',
+      date: new Date('2024-05-01'),
     },
   ];
+
+  const renderReviewCard = useCallback(
+    ({ item }: { item: typeof reviewsData[0] }) => (
+      <ReviewCard
+        username={item.username}
+        review={item.review}
+        date={item.date}
+      />
+    ),
+    []
+  );
+
 
   const genreNames = movie.genre_ids
     ?.map((id: number) => genreIdMap[id])
@@ -83,8 +130,7 @@
     .join(', ');
 
     return (
-    <ScrollView className='flex-1 bg-secondary/30 ' showsVerticalScrollIndicator={false}>
-      <View className='flex-1'>
+     <ScrollView className='flex-grow bg-secondary/30 ' showsVerticalScrollIndicator={false}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={styles.backButton}
@@ -92,7 +138,7 @@
             <ChevronLeft strokeWidth={1.5} size={25} color={colors.text}/>
         </TouchableOpacity>
 
-        <View className='gap-1'>
+        <View className='gap-1 flex-grow'>
           <ReviewCover path={movie.backdrop_path} vote_average={movie.vote_average} poster_path={movie.poster_path} />
         
           <View className='p-6 flex-row '>
@@ -144,24 +190,18 @@
             </Card>
           </View>
 
-          <View className='p-5 bg-red-600'>
+          <View className='p-5'>
             <ReviewInput/>
             <FlatList
               data={reviewsData}
               keyExtractor={(item) => item.id}
-              renderItem={({ item }) => (
-                <ReviewCard
-                  username={item.username}
-                  review={item.review}
-                  date={item.date}
-                />
-              )}
-              contentContainerStyle={{ gap: 2, paddingBottom:20}}
-              scrollEnabled={false} // since inside ScrollView
+              renderItem={renderReviewCard}
+              contentContainerStyle={{ gap: 2, paddingBottom: 20 }}
+              scrollEnabled={false}
+
             />
           </View>
-        </View>
-      </View>    
+        </View> 
     </ScrollView>
     );
   };

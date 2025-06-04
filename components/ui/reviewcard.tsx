@@ -4,6 +4,12 @@ import {
     CardDescription,
     CardFooter,
 } from '~/components/ui/card';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '~/components/ui/accordion';
 import { Text } from '~/components/ui/text';
 import { useTheme } from '@react-navigation/native';
 import { CircleUser } from 'lucide-react-native';
@@ -28,29 +34,26 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ username, review, date, }) => {
     const { colors } = useTheme();
 
     return (
-    <View className='mb-5'> 
-        <Card className='w-full flex-col p-5 '>
-            <CardDescription>
-                <View className='flex-row gap-3'>
-                    <View className='flex-col h-full'>
-                        <CircleUser strokeWidth={1.5} size={45} color={colors.text}/>
-                    </View>
-
-                    <View className='flex-1 flex-col gap-3'>
-                        <View className='flex-col '>
-                            <Text className='text-xl font-bold'>{username}</Text>
-                            <Text className='text-xs'>{getDaysAgo(date)}</Text>
-                        </View>
-                        <View className='pr-4'>
-                            <Text>{review}</Text>
-                        </View>
-                    </View>
-                </View>
-            </CardDescription>
-
-        </Card>
-    </View>
-
+    <Accordion
+      type="single"
+    >
+      <AccordionItem value='item-1'>
+        <AccordionTrigger>
+          <View className='px-6 py-2 flex-row items-center gap-4'>
+          <View className='flex-col'>
+              <CircleUser strokeWidth={1.5} size={45} color={colors.text}/>
+          </View>
+          <View className='flex-1 flex-col'>
+                  <Text className='text-xl font-bold'>{username}</Text>
+                  <Text className='text-xs font-light'>{getDaysAgo(date)}</Text>
+          </View>
+          </View>
+        </AccordionTrigger>
+        <AccordionContent className='pl-16 pr-10 pb-9 bg-red-60'>
+          <Text>{review}</Text>
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
     );
 };
 
