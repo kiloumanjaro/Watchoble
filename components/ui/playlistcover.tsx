@@ -8,6 +8,7 @@ type PlaylistCoverProps = {
 
 const genreImages: { [key: string]: any } = {
   action: require('~/assets/images/action.png'),
+  top: require('~/assets/images/top.png')
   // Add more genres and image paths as needed
 };
 
@@ -29,6 +30,28 @@ const genreDescriptions: { [key: string]: string } = {
     thriller: 'Tense, gripping tracks that keep the pulse racing through suspense and danger.',
     war: 'Epic, somber, and heroic music that reflects conflict, sacrifice, and the cost of battle.',
     western: 'Rustic, frontier-inspired tunes that evoke dusty trails, saloons, and classic showdowns.',
+    top: 'A curated mix of the most talked-about, highest-rated, and must-see movies across all genres.'
+  };
+
+  const displayNames: { [key: string]: string } = {
+    action: 'Action',
+    adventure: 'Adventure',
+    animation: 'Animation',
+    comedy: 'Comedy',
+    crime: 'Crime',
+    documentary: 'Documentary',
+    drama: 'Drama',
+    family: 'Family',
+    fantasy: 'Fantasy',
+    history: 'History',
+    horror: 'Horror',
+    music: 'Music',
+    mystery: 'Mystery',
+    romance: 'Romance',
+    thriller: 'Thriller',
+    war: 'War',
+    western: 'Western',
+    top: 'Best Picks',
   };
 
 const PlaylistCover: React.FC<PlaylistCoverProps> = ({ name }) => {
@@ -45,7 +68,7 @@ const PlaylistCover: React.FC<PlaylistCoverProps> = ({ name }) => {
         className="absolute top-0 right-0 bottom-0 left-0"
       />
       <View className="w-full h-full flex-col justify-end items-center">
-        <Text className="font-semibold text-3xl text-white mb-3">{name}</Text>
+        <Text className="font-semibold text-3xl text-white mb-3">{displayNames[key] || name}</Text>
         <View className='w-5/6'>
           <Text className='text-sm font-light text-center mb-10'>{description}</Text>
         </View>
