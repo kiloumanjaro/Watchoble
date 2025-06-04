@@ -12,6 +12,8 @@ import { RootStackParamList } from '~/types/types'; // adjust import path
 import PlaylistCover from '~/components/ui/playlistcover';
 import Slider from '~/components/ui/slider';
 import { ImageSlider } from '@/data/SliderData';
+import { GenreData } from '~/data/GenreData';
+
 
 type GenreDetailsNavigationProp = NativeStackNavigationProp<RootStackParamList, 'playlist'>;
 
@@ -91,28 +93,25 @@ const index = () => {
         </View>
       </View>
 
-      <View className="mt-4">
-        <Text className='text-xl font-semibold ml-5'>Film Genres</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <View className="flex-row">
-            {[
-              'Action', 'Adventure', 'Animation', 'Comedy', 'Crime', 'Drama',
-              'Family', 'Fantasy', 'History', 'Horror', 'Music', 'Mystery',
-              'Romance', 'Science Fiction', 'TV Movie', 'Thriller', 'War', 'Western'
-            ].map((genre) => (
-              <Genre
-                key={genre}
-                name={genre}
-                items={30}
-                movieId={genreIdMap[genre] ?? 0}  // Pass movieId instead of genre name
-                image={require('~/assets/images/icon.png')}
-                genre={genre}  // Pass the genre name (if needed in the playlist page)
-                onPress={() => handleGenrePress(genre)}  // Handle the press
-              />
-            ))}
-          </View>
-        </ScrollView>
-      </View>
+    <View className="mt-4">
+      <Text className="text-xl font-semibold ml-5">Film Genres</Text>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <View className="flex-row">
+          {GenreData.map((genreItem) => (
+            <Genre
+              key={genreItem.genre}
+              name={genreItem.name}
+              items={genreItem.items}
+              genre={genreItem.genre}
+              movieId={genreItem.movieId}
+              image={genreItem.image}
+              onPress={(genre, id) => handleGenrePress(genre, id)}
+            />
+          ))}
+        </View>
+      </ScrollView>
+    </View>
+
 
       <View className='mt-5'>
         <Text className='text-xl font-semibold ml-5'>People</Text>
