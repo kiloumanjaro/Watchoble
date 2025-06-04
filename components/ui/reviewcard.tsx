@@ -35,7 +35,9 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ username, review, date, }) => {
 
     return (
     <Accordion
-      type="single"
+      type="multiple"
+      className='px-5 pb-5'
+      defaultValue={['item-1']}
     >
       <AccordionItem value='item-1'>
         <AccordionTrigger>

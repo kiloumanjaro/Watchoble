@@ -129,81 +129,76 @@
     .slice(0, 2)
     .join(', ');
 
-    return (
-     <ScrollView className='flex-grow bg-secondary/30 ' showsVerticalScrollIndicator={false}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.backButton}
-        >
-            <ChevronLeft strokeWidth={1.5} size={25} color={colors.text}/>
-        </TouchableOpacity>
+  return (
+    <FlatList
+      data={reviewsData}
+      keyExtractor={(item) => item.id}
+      renderItem={renderReviewCard}
+      contentContainerStyle={{ paddingBottom: 100 }}
+      ListHeaderComponent={
+        <>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.backButton}
+          >
+            <ChevronLeft strokeWidth={1.5} size={25} color={colors.text} />
+          </TouchableOpacity>
 
-        <View className='gap-1 flex-grow'>
-          <ReviewCover path={movie.backdrop_path} vote_average={movie.vote_average} poster_path={movie.poster_path} />
-        
-          <View className='p-6 flex-row '>
-            <View className='w-3/4 pr-5 gap-2'>
-              <Text className="font-semibold text-3xl ">{movie.title}</Text>
-              <Text className='text-sm' > {movie.overview} </Text>
+          <View className="gap-1 bg-secondary/30">
+            <ReviewCover path={movie.backdrop_path} vote_average={movie.vote_average} poster_path={movie.poster_path} />
+
+            <View className="p-6 flex-row">
+              <View className="w-3/4 pr-5 gap-2">
+                <Text className="font-semibold text-3xl">{movie.title}</Text>
+                <Text className="text-sm">{movie.overview}</Text>
+              </View>
+              <View className="w-1/4 items-end">
+                <Image
+                  source={{ uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}` }}
+                  style={{ width: 84, height: 126, borderRadius: 5 }}
+                  resizeMode="cover"
+                />
+              </View>
             </View>
-            <View className=' w-1/4 items-end '>
-              <Image
-              source={{ uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}` }}
-              style={{ width: 84, height: 126, borderRadius: 5 }}
-              resizeMode="cover"
-              />
+
+            <View className="flex-row w-full mx-5 gap-2">
+              {/* Cards */}
+              <Card style={{ width: '30%' }} className="justify-center mr-1 p-5 bg-[#f8f8f8] dark:bg-[#222222]/50">
+                <Tags strokeWidth={1.5} size={25} color={colors.text} />
+                <View>
+                  <Text className="text-base font-bold text-primary">Genres</Text>
+                  <Text className="text-sm text-foreground">{genreNames || 'N/A'}</Text>
+                </View>
+              </Card>
+
+              <Card style={{ width: '28%' }} className="justify-center p-4 mr-1 bg-[#f8f8f8] dark:bg-[#222222]/50">
+                <History strokeWidth={1.5} size={25} color={colors.text} />
+                <View>
+                  <Text className="text-base font-bold text-primary">Released</Text>
+                  <Text className="text-sm text-foreground">{movie.release_date || 'N/A'}</Text>
+                </View>
+              </Card>
+
+              <Card style={{ width: '28%' }} className="justify-center p-4 bg-[#f8f8f8] dark:bg-[#222222]/50 gap-3 py-6">
+                <Star strokeWidth={1.5} size={25} color={colors.text} />
+                <View>
+                  <Text className="text-base font-bold text-primary">Ratings</Text>
+                  <Text className="text-sm text-foreground">{movie.vote_average || 'N/A'}</Text>
+                </View>
+              </Card>
+            </View>
+
+            <View className="pl-5 pr-5 pt-5">
+              <ReviewInput />
+              <Text className="mb-4 text-lg font-semibold">Reviews</Text>
             </View>
           </View>
+        </>
+      }
+      showsVerticalScrollIndicator={false}
+    />
+  );
 
-          <View className="flex-row w-full mx-5 gap-2 ">
-            <Card
-              style={{ width: '30%' }}
-              className="justify-center mr-1 p-5 bg-[#f8f8f8] dark:bg-[#222222]/50"
-            >
-              <Tags strokeWidth={1.5} size={25} color={colors.text} />
-              <View>
-                <Text className="text-base font-bold text-primary">Genres</Text>
-                <Text className="text-sm text-foreground">{genreNames || 'N/A'}</Text>
-              </View>
-            </Card>
-
-            <Card
-              style={{ width: '28%' }}
-              className="justify-center p-4 mr-1 bg-[#f8f8f8] dark:bg-[#222222]/50"
-            >
-              <History strokeWidth={1.5} size={25} color={colors.text} />
-              <View>
-                <Text className="text-base font-bold text-primary">Released</Text>
-                <Text className="text-sm text-foreground">{movie.release_date || 'N/A'}</Text>
-              </View>
-            </Card>
-
-            <Card
-              style={{ width: '28%' }}
-              className="justify-center p-4 bg-[#f8f8f8] dark:bg-[#222222]/50 gap-3 py-6"
-            >
-              <Star strokeWidth={1.5} size={25} color={colors.text} />
-              <View>
-                <Text className="text-base font-bold text-primary">Ratings</Text>
-                <Text className="text-sm text-foreground">{movie.vote_average || 'N/A'}</Text>
-              </View>
-            </Card>
-          </View>
-
-          <View className='p-5'>
-            <ReviewInput/>
-            <FlatList
-              data={reviewsData}
-              keyExtractor={(item) => item.id}
-              renderItem={renderReviewCard}
-              contentContainerStyle={{ gap: 2, paddingBottom: 20 }}
-              scrollEnabled={false}
-
-            />
-          </View>
-        </View> 
-    </ScrollView>
-    );
   };
 
   export default Reviews;
