@@ -46,6 +46,14 @@ export default function Register() {
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: email.trim(),
         password: password,
+        options: {
+          data: { // This goes into auth.users.raw_user_meta_data
+            username: username.trim(),
+            firstname: firstName.trim(),
+            lastname: lastName.trim(),
+            bio: bio.trim()
+          }
+        }
       });
 
       if (authError) {
@@ -53,39 +61,20 @@ export default function Register() {
         return;
       }
 
-      if (authData.user) {
-        // Create user profile in your users table
-        const { error: profileError } = await supabase
-          .from('users')
-          .insert([
-            {
-              userid: authData.user.id,
-              username: username.trim(),
-              firstname: firstName.trim(),
-              lastname: lastName.trim(),
-              bio: bio.trim() || null,
-              followers: 0,
-              following: 0,
-            },
-          ]);
+      // Success case - show alert and navigate to login
+      Alert.alert(
+        'Success!',
+        'Account created successfully. Please check your email to verify your account.',
+        [
+          {
+            text: 'OK',
+            onPress: () => router.replace('/(auth)/login'), // Navigate to login screen
+          },
+        ]
+      );
 
-        if (profileError) {
-          Alert.alert('Profile Creation Failed', profileError.message);
-          return;
-        }
-
-        Alert.alert(
-          'Success!',
-          'Account created successfully. Please check your email to verify your account.',
-          [
-            {
-              text: 'OK',
-              onPress: () => router.replace('/(auth)/login'),
-            },
-          ]
-        );
-      }
     } catch (error) {
+      console.error('Registration Error:', error);
       Alert.alert('Error', 'An unexpected error occurred');
     } finally {
       setLoading(false);
