@@ -45,11 +45,6 @@
     const [reviewText, setReviewText] = useState('');
     const navigation = useNavigation();
     const { colors } = useTheme();
-    const [rating, setRating] = useState(0);
-    const handleChange = useCallback(
-    (value: number) => setRating(Math.round(value * 10) / 10),
-    []
-    );
 
     useLayoutEffect(() => {
       navigation.setOptions({ headerShown: false });
@@ -69,9 +64,10 @@
 
   // State for inserting review
   const [content, setContent] = useState('');
-  const [hasSpoiler, setHasSpoiler] = useState(false);
-  const [myRating, setmyRating] = useState(0);
   const [date, setDate] = useState(new Date().toISOString()); // ISO format for Supabase
+
+  // State for movie data
+  const [movieData, setMovieData] = useState<any>(null);
 
   // Fetch all reviews
   const getReviewsData = async () => {
@@ -94,7 +90,7 @@
   };
 
   // Insert review
-  const insertReview = async () => {
+  const insertReview = async (myRating: number, hasSpoiler: boolean) => {
     // Get current user
     const { data: userData, error: userError } = await supabase.auth.getUser();
     if (userError || !userData.user) {
@@ -104,7 +100,7 @@
   
     const userId = userData.user.id;
 
-    if(!content || myRating === 0) {
+    if(!content) {
       Alert.alert('Error', 'Please fill in all fields');
       return;
     }
@@ -132,10 +128,56 @@
     }
 
     Alert.alert('Success', 'Review added!');
+
+       const { data: movieData, error: movieError } = await supabase
+      .from('movie')
+      .insert([
+        {
+          movieID: movie.id,
+          title: movie.title
+        },
+      ]);
+
+      if (movieError) {
+        Alert.alert('Error', 'Failed to insert movie data');
+        return;
+      }
+    
+    const { data:movieRatings, error:errorRatings } = await supabase
+    .from('movie')
+    .select(`
+      avg_rating,
+      review_count
+    `)
+    .eq('movieID', movie.id)
+    .single();
+
+    if (errorRatings) {
+      Alert.alert(errorRatings.message + 'Failed to fetch movie ratings');
+      return;
+    }
+
+    const avg = movieRatings?.avg_rating || 0;
+    const count = movieRatings?.review_count || 0;
+    const updatedRating = ((avg * count) + myRating) / (count + 1);
+
+    const { data: movieUpdate, error: updateError } = await supabase
+      .from('movie')
+      .update({
+        avg_rating: updatedRating,
+        review_count: count + 1,
+      })
+      .eq('movieID', movie.id)
+    
+    if (updateError) {
+      Alert.alert('Error', 'Failed to update movie ratings');
+      return;
+    }
+
+    setMovieData(movieUpdate || null);
+
     setContent('');
     setReviewText('');
-    setHasSpoiler(false);
-    setmyRating(0);
     setDate(new Date().toISOString());
     getReviewsData(); // Refresh reviews
     
@@ -188,9 +230,7 @@
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleSubmitRating = (newRating: number, containsSpoiler: boolean) => {
-    setmyRating(newRating);   
-    setHasSpoiler(containsSpoiler);
-    insertReview();              
+    insertReview(newRating, containsSpoiler);              
   };
 
   const genreNames = movie.genre_ids
@@ -202,7 +242,6 @@
   return (
     <FlatList
       data={reviewsData}
-      keyExtractor={(item) => item.id}
       renderItem={renderReviewCard}
       removeClippedSubviews={false}
 
@@ -284,7 +323,6 @@
         </>
       }
       showsVerticalScrollIndicator={false}
-
       
     />
   );
