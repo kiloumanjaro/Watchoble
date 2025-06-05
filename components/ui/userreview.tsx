@@ -11,6 +11,7 @@ import { useTheme } from '@react-navigation/native';
 import { Text } from '~/components/ui/text';
 import { FileText } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
+import { Trash2 } from 'lucide-react-native';
 
 interface UserReview {
   title: string;
@@ -48,6 +49,7 @@ const UserReview: React.FC<UserReviewProps> = ({ review }) => {
             style={{ width: 63, height: 93, borderRadius: 3 }}
             resizeMode="cover"
           />
+
           <View className={`ml-5 flex-1 ${isLongTitle ? 'h-[90%]' : 'h-3/4'} flex-col justify-start`}>
             <View className="flex-grow">
               <Text className='text-lg font-medium' style={{ lineHeight: 20 }}>{review.title}</Text>
@@ -71,16 +73,20 @@ const UserReview: React.FC<UserReviewProps> = ({ review }) => {
               </Text>
             </View>
           </View>
+            <View className='absolute right-5 z-50 bg-card overflow-hidden'>
+              <TouchableOpacity>
+              <Trash2 strokeWidth={1.5} size={18} color={'#FF0000'} />
+              </TouchableOpacity>
+            </View>
         </AccordionTrigger>
 
-        <AccordionContent className="rounded-md p-4 bg-[#f8f8f8] dark:bg-[#222222] text-xl gap-3">
+        <AccordionContent className="rounded-md p-4 bg-[#f8f8f8] dark:bg-[#222222] text-xl gap-3">  
           <View className='flex-row items-center gap-2'>
-            <FileText strokeWidth={1.5} size={18} color={colors.primary}/>
+            <FileText strokeWidth={1.5} size={18} color={colors.primary} />
             <Text className='text-base'>Review</Text>
           </View>
           <Text className='text-sm'>{review.review}</Text>
         </AccordionContent>
-
       </AccordionItem>
     </Accordion>
   );
