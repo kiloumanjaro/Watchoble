@@ -14,6 +14,8 @@
     Card,
   } from '~/components/ui/card';
 
+
+  
   const genreIdMap: { [key: number]: string } = {
     28: 'Action',
     12: 'Adventure',
@@ -66,6 +68,7 @@
       review:
         'Director Sam Mendes, inspired by stories from his grandfather, delivers a powerful anti-war film that is both intimate and epic. The real-time, “one-shot” camera technique (masterfully shot by Roger Deakins) gives the film an immersive quality rarely seen in war cinema.',
       date: new Date('2024-05-01'),
+      has_spoiler: true
     },
     {
       id: '2',
@@ -73,6 +76,7 @@
       review:
         'Director Sam Mendes, inspired by stories from his grandfather, delivers a powerful anti-war film that is both intimate and epic. The real-time, “one-shot” camera technique (masterfully shot by Roger Deakins) gives the film an immersive quality rarely seen in war cinema.',
       date: new Date('2024-05-01'),
+      has_spoiler: false
     },      
        {
       id: '3',
@@ -80,6 +84,7 @@
       review:
         'Director Sam Mendes, inspired by stories from his grandfather, delivers a powerful anti-war film that is both intimate and epic. The real-time, “one-shot” camera technique (masterfully shot by Roger Deakins) gives the film an immersive quality rarely seen in war cinema.',
       date: new Date('2024-05-01'),
+      has_spoiler: true
     },
         {
       id: '4',
@@ -87,6 +92,7 @@
       review:
         'Director Sam Mendes, inspired by stories from his grandfather, delivers a powerful anti-war film that is both intimate and epic. The real-time, “one-shot” camera technique (masterfully shot by Roger Deakins) gives the film an immersive quality rarely seen in war cinema.',
       date: new Date('2024-05-01'),
+      has_spoiler: true
     },
         {
       id: '5',
@@ -94,6 +100,7 @@
       review:
         'Director Sam Mendes, inspired by stories from his grandfather, delivers a powerful anti-war film that is both intimate and epic. The real-time, “one-shot” camera technique (masterfully shot by Roger Deakins) gives the film an immersive quality rarely seen in war cinema.',
       date: new Date('2024-05-01'),
+      has_spoiler: true
     },
         {
       id: '6',
@@ -101,6 +108,7 @@
       review:
         'Director Sam Mendes, inspired by stories from his grandfather, delivers a powerful anti-war film that is both intimate and epic. The real-time, “one-shot” camera technique (masterfully shot by Roger Deakins) gives the film an immersive quality rarely seen in war cinema.',
       date: new Date('2024-05-01'),
+      has_spoiler: false
     }, 
         {
       id: '7',
@@ -108,6 +116,7 @@
       review:
         'Director Sam Mendes, inspired by stories from his grandfather, delivers a powerful anti-war film that is both intimate and epic. The real-time, “one-shot” camera technique (masterfully shot by Roger Deakins) gives the film an immersive quality rarely seen in war cinema.',
       date: new Date('2024-05-01'),
+      has_spoiler: false
     },
   ];
 
@@ -117,6 +126,7 @@
         username={item.username}
         review={item.review}
         date={item.date}
+        has_spoiler={item.has_spoiler ?? false}
       />
     ),
     []
@@ -134,7 +144,8 @@
       data={reviewsData}
       keyExtractor={(item) => item.id}
       renderItem={renderReviewCard}
-      contentContainerStyle={{ paddingBottom: 100 }}
+      removeClippedSubviews={false}
+      contentContainerStyle={{ paddingBottom: 100}}
       ListHeaderComponent={
         <>
           <TouchableOpacity
@@ -144,7 +155,7 @@
             <ChevronLeft strokeWidth={1.5} size={25} color={colors.text} />
           </TouchableOpacity>
 
-          <View className="gap-1 bg-secondary/30">
+          <View className="gap-1">
             <ReviewCover path={movie.backdrop_path} vote_average={movie.vote_average} poster_path={movie.poster_path} />
 
             <View className="p-6 flex-row">
