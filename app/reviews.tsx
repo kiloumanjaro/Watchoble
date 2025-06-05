@@ -70,7 +70,7 @@
   // State for inserting review
   const [content, setContent] = useState('');
   const [hasSpoiler, setHasSpoiler] = useState(false);
-  const [myRating, setMyRating] = useState(0);
+  const [myRating, setmyRating] = useState(0);
   const [date, setDate] = useState(new Date().toISOString()); // ISO format for Supabase
 
   // Fetch all reviews
@@ -135,7 +135,7 @@
     setContent('');
     setReviewText('');
     setHasSpoiler(false);
-    setMyRating(0);
+    setmyRating(0);
     setDate(new Date().toISOString());
     getReviewsData(); // Refresh reviews
     
@@ -180,7 +180,6 @@
         has_spoiler={item.has_spoiler ?? false}
         rating={item.rating}
         date={item.date}
-        has_spoiler={item.has_spoiler ?? false}
       />
     ),
     []
@@ -189,7 +188,7 @@
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleSubmitRating = (newRating: number, containsSpoiler: boolean) => {
-    setMyRating(newRating);   
+    setmyRating(newRating);   
     setHasSpoiler(containsSpoiler);
     insertReview();              
   };
