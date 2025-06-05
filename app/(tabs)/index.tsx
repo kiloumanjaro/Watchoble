@@ -9,7 +9,6 @@ import { useNavigation } from '@react-navigation/native';
 import { fetchTrendingPeople } from '@/services/api/peopleService';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '~/types/types'; // adjust import path
-import PlaylistCover from '~/components/ui/playlistcover';
 import Slider from '~/components/ui/slider';
 import { ImageSlider } from '@/data/SliderData';
 

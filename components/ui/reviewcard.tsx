@@ -13,21 +13,13 @@ import { BlurView } from 'expo-blur';
 
 type ReviewCardProps = {
   username: string;
-  review: string;
-  date: Date;
-  has_spoiler: boolean;
+  content: string;
+  date: string;
+  has_spoiler?: boolean;
+  rating?: number,
 }
 
-const getDaysAgo = (date: Date): string => {
-  const now = new Date();
-  const diffTime = now.getTime() - date.getTime();
-  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-  if (diffDays === 0) return "Today";
-  if (diffDays === 1) return "1 day ago";
-  return `${diffDays} days ago`;
-};
-
-const ReviewCard: React.FC<ReviewCardProps> = ({ username, review, date, has_spoiler}) => {
+const ReviewCard: React.FC<ReviewCardProps> = ({ username, content, date, has_spoiler}) => {
   const { colors } = useTheme();
   const [isOpen, setIsOpen] = useState<boolean>(!has_spoiler);
 
@@ -56,13 +48,13 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ username, review, date, has_spo
             </View>
             <View className="flex-1 flex-col z-20">
               <Text className="text-xl font-bold">{username}</Text>
-              <Text className="text-xs font-light">{getDaysAgo(date)}</Text>
+              <Text className="text-xs font-light">{date}</Text>
             </View>
           </View>
         </AccordionTrigger>
 
         <AccordionContent className='pl-16 pr-10 pb-9 bg-red-60'>
-          <Text>{review}</Text>
+          <Text>{content}</Text>
         </AccordionContent>
 
       </AccordionItem>

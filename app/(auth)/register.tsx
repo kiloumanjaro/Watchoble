@@ -23,63 +23,89 @@ export default function Register() {
   const [bio, setBio] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleRegister = async () => {
-    // Validation
-    if (!email || !password || !username || !firstName || !lastName) {
-      Alert.alert('Error', 'Please fill in all required fields');
+const handleRegister = async () => {
+  // Validation
+  if (!email || !password || !username || !firstName || !lastName) {
+    Alert.alert('Error', 'Please fill in all required fields');
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    Alert.alert('Error', 'Passwords do not match');
+    return;
+  }
+
+  if (password.length < 6) {
+    Alert.alert('Error', 'Password must be at least 6 characters');
+    return;
+  }
+
+  setLoading(true);
+  try {
+     // Check if email OR username already exists
+    const { data: existingUsers, error: duplicateCheckError } = await supabase
+      .from('users')
+      .select('email, username')
+      .or(`email.eq.${email.trim()},username.eq.${username.trim()}`);
+
+    if (duplicateCheckError) {
+      Alert.alert('Error', 'Error checking email and username availability');
       return;
     }
 
-    if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match');
-      return;
-    }
-
-    if (password.length < 6) {
-      Alert.alert('Error', 'Password must be at least 6 characters');
-      return;
-    }
-
-    setLoading(true);
-    try {
-      // First, create the auth user
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email: email.trim(),
-        password: password,
-        options: {
-          data: { // This goes into auth.users.raw_user_meta_data
-            username: username.trim(),
-            firstname: firstName.trim(),
-            lastname: lastName.trim(),
-            bio: bio.trim()
-          }
-        }
-      });
-
-      if (authError) {
-        Alert.alert('Registration Failed', authError.message);
+    if (existingUsers && existingUsers.length > 0) {
+      const existingUser = existingUsers[0];
+      
+      if (existingUser.email === email.trim()) {
+        Alert.alert('Registration Failed', 'An account with this email already exists. Please sign in instead.');
         return;
       }
-
-      // Success case - show alert and navigate to login
-      Alert.alert(
-        'Success!',
-        'Account created successfully. Please check your email to verify your account.',
-        [
-          {
-            text: 'OK',
-            onPress: () => router.replace('/(auth)/login'), // Navigate to login screen
-          },
-        ]
-      );
-
-    } catch (error) {
-      console.error('Registration Error:', error);
-      Alert.alert('Error', 'An unexpected error occurred');
-    } finally {
-      setLoading(false);
+      
+      if (existingUser.username === username.trim()) {
+        Alert.alert('Error', 'Username already exists. Please choose a different username.');
+        return;
+      }
     }
-  };
+
+    // Now create the auth user
+    const { data: authData, error: authError } = await supabase.auth.signUp({
+      email: email.trim(),
+      password: password,
+      options: {
+        data: { // This goes into auth.users.raw_user_meta_data
+          email: email.trim(),  
+          username: username.trim(),
+          firstname: firstName.trim(),
+          lastname: lastName.trim(),
+          bio: bio.trim()
+        }
+      }
+    });
+
+    if (authError) {
+      Alert.alert('Registration Failed', authError.message);
+      return;
+    }
+
+    // Success case - show alert and navigate to login
+    Alert.alert(
+      'Success!',
+      'Account created successfully. Please check your email to verify your account.',
+      [
+        {
+          text: 'OK',
+          onPress: () => router.replace('/(tabs)'), // Navigate to login screen
+        },
+      ]
+    );
+
+  } catch (error) {
+    console.error('Registration Error:', error);
+    Alert.alert('Error', 'An unexpected error occurred');
+  } finally {
+    setLoading(false);
+  }
+};
 
   const goToLogin = () => {
     router.push('/(auth)/login');
