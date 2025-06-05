@@ -7,9 +7,27 @@ type PlaylistCoverProps = {
 };
 
 const genreImages: { [key: string]: any } = {
-  action: require('~/assets/images/action.png'),
+
+  action: require('assets/images/FilmGenre_imgs/action.png'),
+  adventure: require('assets/images/FilmGenre_imgs/adventure_card.png'),
+  animation: require('assets/images/FilmGenre_imgs/animation.png'),
+  comedy: require('assets/images/FilmGenre_imgs/comedy.png'),
+  crime: require('assets/images/FilmGenre_imgs/crime.png'),
+  documentary: require('assets/images/FilmGenre_imgs/documentary.png'),
+  drama: require('assets/images/FilmGenre_imgs/drama.png'),
+  family: require('assets/images/FilmGenre_imgs/family.png'),
+  fantasy: require('assets/images/FilmGenre_imgs/fantasy.png'),
+  history: require('assets/images/FilmGenre_imgs/history.png'),
+  horror: require('assets/images/FilmGenre_imgs/horror.png'),
+  music: require('assets/images/FilmGenre_imgs/music.png'),
+  mystery: require('assets/images/FilmGenre_imgs/mystery.png'),
+  romance: require('assets/images/FilmGenre_imgs/romance.png'),
+  thriller: require('assets/images/FilmGenre_imgs/thriller.png'),
+  war: require('assets/images/FilmGenre_imgs/war.png'),
+  western: require('assets/images/FilmGenre_imgs/western.png'),
   top: require('~/assets/images/top.png')
   // Add more genres and image paths as needed
+
 };
 
 const genreDescriptions: { [key: string]: string } = {

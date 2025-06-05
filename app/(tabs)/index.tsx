@@ -11,6 +11,8 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '~/types/types'; // adjust import path
 import Slider from '~/components/ui/slider';
 import { ImageSlider } from '@/data/SliderData';
+import { GenreData } from '~/data/GenreData';
+
 
 type GenreDetailsNavigationProp = NativeStackNavigationProp<RootStackParamList, 'playlist'>;
 
@@ -22,12 +24,7 @@ interface Person {
   known_for_department?: string;
 }
 
-const index = () => {
-  const [query, setQuery] = useState('');
-  const navigation = useNavigation<GenreDetailsNavigationProp>(); 
-  const [trendingPeople, setTrendingPeople] = useState<Person[]>([]);
-
-  const genreIdMap: { [key: string]: number } = {
+ const genreIdMap: { [key: string]: number } = {
     Action: 28,
     Adventure: 12,
     Animation: 16,
@@ -46,6 +43,12 @@ const index = () => {
     War: 10752,
     Western: 37,
   };
+
+
+const index = () => {
+  const [query, setQuery] = useState('');
+  const navigation = useNavigation<GenreDetailsNavigationProp>(); 
+  const [trendingPeople, setTrendingPeople] = useState<Person[]>([]);
 
   const handleGenrePress = (genre: string) => {
     const movieId = genreIdMap[genre] ?? 0;  // Get the movieId from the genreIdMap
@@ -90,27 +93,25 @@ const index = () => {
         </View>
       </View>
 
-      <View className="mt-4">
-        <Text className='text-xl font-semibold ml-5'>Film Genres</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <View className="flex-row">
-            {[
-              'Action', 'Adventure', 'Animation', 'Comedy', 'Crime', 'Drama',
-              'Family', 'Fantasy', 'History', 'Horror', 'Music', 'Mystery',
-              'Romance', 'Science Fiction', 'TV Movie', 'Thriller', 'War', 'Western'
-            ].map((genre) => (
-              <Genre
-                key={genre}
-                name={genre}
-                items={30}
-                movieId={genreIdMap[genre] ?? 0}  // Pass movieId instead of genre name
-                genre={genre}  // Pass the genre name (if needed in the playlist page)
-                onPress={() => handleGenrePress(genre)}  // Handle the press
-              />
-            ))}
-          </View>
-        </ScrollView>
-      </View>
+    <View className="mt-4">
+      <Text className="text-xl font-semibold ml-5">Film Genres</Text>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <View className="flex-row">
+          {GenreData.map((genreItem) => (
+            <Genre
+              key={genreItem.genre}
+              name={genreItem.name}
+              items={genreItem.items}
+              movieId={genreIdMap[genreItem.genre] ?? 0}
+              genre={genreItem.genre}
+              image={genreItem.image}
+              onPress={() => handleGenrePress(genreItem.genre)}
+            />
+          ))}
+        </View>
+      </ScrollView>
+    </View>
+
 
       <View className='mt-5'>
         <Text className='text-xl font-semibold ml-5'>People</Text>
