@@ -82,7 +82,7 @@ export default function Screen() {
         </View>
 
         <View className='flex-row'>
-          {userdata?.bio?.trim() !== '' && (
+          {userdata?.bio?.trim() && (
             <CardDescription className='text-base font-semibold'>
               {userdata.bio}
             </CardDescription>
