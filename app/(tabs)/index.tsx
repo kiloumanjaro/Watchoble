@@ -25,12 +25,7 @@ interface Person {
   known_for_department?: string;
 }
 
-const index = () => {
-  const [query, setQuery] = useState('');
-  const navigation = useNavigation<GenreDetailsNavigationProp>(); 
-  const [trendingPeople, setTrendingPeople] = useState<Person[]>([]);
-
-  const genreIdMap: { [key: string]: number } = {
+ const genreIdMap: { [key: string]: number } = {
     Action: 28,
     Adventure: 12,
     Animation: 16,
@@ -49,6 +44,12 @@ const index = () => {
     War: 10752,
     Western: 37,
   };
+
+
+const index = () => {
+  const [query, setQuery] = useState('');
+  const navigation = useNavigation<GenreDetailsNavigationProp>(); 
+  const [trendingPeople, setTrendingPeople] = useState<Person[]>([]);
 
   const handleGenrePress = (genre: string) => {
     const movieId = genreIdMap[genre] ?? 0;  // Get the movieId from the genreIdMap
@@ -102,10 +103,10 @@ const index = () => {
               key={genreItem.genre}
               name={genreItem.name}
               items={genreItem.items}
+              movieId={genreIdMap[genreItem.genre] ?? 0}
               genre={genreItem.genre}
-              movieId={genreItem.movieId}
               image={genreItem.image}
-              onPress={(genre, id) => handleGenrePress(genre, id)}
+              onPress={() => handleGenrePress(genreItem.genre)}
             />
           ))}
         </View>
