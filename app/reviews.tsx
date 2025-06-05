@@ -180,6 +180,7 @@
         has_spoiler={item.has_spoiler ?? false}
         rating={item.rating}
         date={item.date}
+        has_spoiler={item.has_spoiler ?? false}
       />
     ),
     []
@@ -205,6 +206,7 @@
       keyExtractor={(item) => item.id}
       renderItem={renderReviewCard}
       removeClippedSubviews={false}
+
       contentContainerStyle={{ paddingBottom: 100, flex: 1}}
       ListHeaderComponent={
         <>
@@ -217,6 +219,7 @@
           >
             <ChevronLeft strokeWidth={1.5} size={25} color={colors.text} />
           </TouchableOpacity>
+
           <View className="gap-1">
             <ReviewCover path={movie.backdrop_path} vote_average={movie.vote_average} poster_path={movie.poster_path} />
 
