@@ -72,30 +72,74 @@ const Films = () => {
       Alert.alert('Error', 'Failed to enrich reviews: ' + error.message);
     }
   };
-    
-  const deleteReview = async ( reviewID: string) => {
-    // Get current user
+  getReviewsAndMovies();
+
+  const deleteReview = async (tbdata: ReviewItem) => {
     const { data: userData, error: userError } = await supabase.auth.getUser();
     if (userError || !userData.user) {
-      Alert.alert('Error', 'Please log in to add a review');
-      return
+      Alert.alert('Error', 'Please log in to delete a review');
+      return;
     }
-  
+
     const userId = userData.user.id;
 
-    const { data, error } = await supabase
-    .from('review')
-    .delete()
-    .eq('reviewID', reviewID);
+    const { data: movieData, error: movieError } = await supabase
+      .from('movie')
+      .select('avg_rating, review_count')
+      .eq('movieID', tbdata.movie.id)
+      .single();
 
-    if (error) {
+    if (movieError || !movieData) {
+      Alert.alert('Error', 'Failed to fetch movie details');
+      return;
+    }
+
+    const currentAvg = movieData.avg_rating || 0;
+    const currentCount = movieData.review_count || 0;
+    const deletedRating = tbdata.ratings;
+
+    const { error: deleteError } = await supabase
+      .from('review')
+      .delete()
+      .eq('reviewID', tbdata.reviewID);
+
+    if (deleteError) {
       Alert.alert('Error', 'Failed to delete review');
       return;
     }
 
-    Alert.alert('Success', 'Review deleted successfully');
-    getReviewsAndMovies();
+    if (currentCount <= 1) {
+      // No more reviews left, delete movie
+      const { error: deleteMovieError } = await supabase
+        .from('movie')
+        .delete()
+        .eq('movieID', tbdata.movie.id);
+
+      if (deleteMovieError) {
+        Alert.alert('Error', 'Failed to delete movie');
+        return;
+      }
+    } else {
+      const newAvg = (currentAvg * currentCount - deletedRating) / (currentCount - 1);
+
+      const { error: updateMovieError } = await supabase
+        .from('movie')
+        .update({
+          avg_rating: newAvg,
+          review_count: currentCount - 1,
+        })
+        .eq('movieID', tbdata.movie.id);
+
+      if (updateMovieError) {
+        Alert.alert('Error', 'Failed to update movie stats');
+        return;
+      }
     }
+
+    Alert.alert('Success', 'Review deleted and stats updated');
+    getReviewsAndMovies();
+  };
+
   
   React.useEffect(() => {
   getReviewsAndMovies();
@@ -135,7 +179,7 @@ const Films = () => {
             review: item.content,
             date: item.date ? new Date(item.date) : new Date(),
             ratings: item.ratings,
-          }} onDelete={() => deleteReview(item.reviewID)} />}
+          }} onDelete={() => deleteReview(item)} />}
           ListEmptyComponent={<Text className='text-center mt-4'>No reviews found.</Text>}
         />
       </View>
