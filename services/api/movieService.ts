@@ -69,3 +69,16 @@ export const fetchGenreMovies = async (genreId: number) => {
     throw error;
   }
 };
+
+export const fetchSingleMovie = async (movieId: number) => {
+  try {
+    const response = await axios.get(`${BASE_URL1}/${movieId}`, {
+      params: PARAMS,
+      headers: HEADERS,
+    });
+    return response.data as Movie;
+  } catch (error: any) {
+    console.error('Error fetching single movie:', error);
+    throw error;
+  }
+};
