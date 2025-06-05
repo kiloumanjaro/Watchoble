@@ -53,12 +53,14 @@ const UserReview: React.FC<UserReviewProps> = ({ review }) => {
               <Text className='text-lg font-medium' style={{ lineHeight: 20 }}>{review.title}</Text>
               <Text className='text-sm font-thin'>{(review.date).toLocaleDateString()}</Text>
             </View>
+            
             <View className='flex-row gap-1'>
+              
               {review.ratings !== undefined && (
                 <Rating
                   size={10}
                   maxRating={5}
-                  rating={review.ratings / 2}
+                  rating={review.ratings}
                   onChange={handleChange}
                   disabled={true}
                   fillColor={colors.primary}
