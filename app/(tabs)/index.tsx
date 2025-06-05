@@ -11,6 +11,9 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '~/types/types'; // adjust import path
 import Slider from '~/components/ui/slider';
 import { ImageSlider } from '@/data/SliderData';
+import SearchResults from '~/components/ui/SearchResults';
+import { Movie } from '@/services/api/movieService';
+import { useSearch } from '../hooks/useSearch';
 
 type GenreDetailsNavigationProp = NativeStackNavigationProp<RootStackParamList, 'playlist'>;
 
@@ -23,9 +26,18 @@ interface Person {
 }
 
 const index = () => {
-  const [query, setQuery] = useState('');
   const navigation = useNavigation<GenreDetailsNavigationProp>(); 
   const [trendingPeople, setTrendingPeople] = useState<Person[]>([]);
+  
+  const {
+    query,
+    setQuery,
+    searchResults,
+    isSearching,
+    searchError,
+    clearSearch,
+    hasResults,
+  } = useSearch(1000); // 1 second debounce
 
   const genreIdMap: { [key: string]: number } = {
     Action: 28,
@@ -68,9 +80,14 @@ const index = () => {
     loadTrendingPeople();
   }, []);
 
-  const handleSearch = (query: string) => {
-    setQuery(query);
-    console.log('Search query:', query);
+  const handleSearch = (searchQuery: string) => {
+    setQuery(searchQuery);
+  };
+
+  const handleMoviePress = (movie: Movie) => {
+    console.log('Movie selected:', movie);
+    // Navigate to movie details or handle as needed
+    clearSearch(); // Clear search after selection
   };
 
   const renderPersonCard = ({ item }: { item: Person }) => (
@@ -83,10 +100,17 @@ const index = () => {
 
   return (
     <ScrollView className='flex-1 bg-secondary/30' showsVerticalScrollIndicator={false}>
-      <View className="relative flex-1 ">
+      <View className="relative flex-1">
         <Slider itemList={ImageSlider} />
         <View className="absolute top-14 left-0 right-0 z-10">
           <SearchBar onSearch={handleSearch} />
+          <SearchResults
+            results={searchResults}
+            isSearching={isSearching}
+            searchError={searchError}
+            query={query}
+            onMoviePress={handleMoviePress}
+          />
         </View>
       </View>
 

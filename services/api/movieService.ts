@@ -82,3 +82,26 @@ export const fetchSingleMovie = async (movieId: number) => {
     throw error;
   }
 };
+
+export const searchMovies = async (query: string) => {
+  try {
+    if (!query.trim()) {
+      return [];
+    }
+    
+    const response = await axios.get(`${BASE_URL2}/search/movie`, {
+      params: {
+        query: query.trim(),
+        include_adult: 'false',
+        language: 'en-US',
+        page: '1',
+      },
+      headers: HEADERS,
+    });
+    
+    return response.data.results as Movie[];
+  } catch (error: any) {
+    console.error('Error searching movies:', error);
+    throw error;
+  }
+};
