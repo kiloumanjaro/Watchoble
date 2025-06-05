@@ -24,7 +24,7 @@ const ReviewSubmit: React.FC<ReviewSubmitProps> = ({
   const { colors } = useTheme();
 
   const handleSubmit = useCallback(() => {
-    onSubmit(rating * 2, hasSpoilers); // Convert to 10-point scale
+    onSubmit(rating, hasSpoilers); // Convert to 10-point scale
     onClose();
   }, [rating, hasSpoilers, onSubmit, onClose]);
 

@@ -15,7 +15,7 @@ export {
 
 export const unstable_settings = {
   // Change this to start with auth instead of tabs
-  initialRouteName: '(auth)',
+  initialRouteName: '/(auth)',
 };
 
 SplashScreen.preventAutoHideAsync();
@@ -50,8 +50,7 @@ function RootLayoutNav() {
     <MenuProvider>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Stack>
-          {/* Add the auth stack */}
-          {/*<Stack.Screen name="(auth)" options={{ headerShown: false }} />*/}
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="modal" options={{ presentation: 'modal', headerLeft: () => null, title: '' }} />
         </Stack>
