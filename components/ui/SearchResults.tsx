@@ -83,14 +83,18 @@ const SearchResults: React.FC<SearchResultsProps> = ({
   );
 
   return (
-    <View className="bg-[#f6f2ef] dark:bg-black/50 rounded-2xl mx-5 mt-2 shadow-sm max-h-80 overflow-hidden">
-      <FlatList
-        data={results} // Show all results, let user scroll
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={renderMovieItem}
-        showsVerticalScrollIndicator={true}
-        scrollEnabled={true}
-      />
+    <View className="bg-[#f6f2ef] dark:bg-black/50 rounded-2xl mx-5 mt-2 shadow-sm">
+      <View className="max-h-80">
+        <FlatList
+          data={results}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={renderMovieItem}
+          showsVerticalScrollIndicator={true}
+          scrollEnabled={true}
+          nestedScrollEnabled={true}
+          contentContainerStyle={{ flexGrow: 1 }}
+        />
+      </View>
     </View>
   );
 };
