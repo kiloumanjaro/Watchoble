@@ -136,8 +136,7 @@
     setMyRating(0);
     setDate(new Date().toISOString());
     getReviewsData(); // Refresh reviews
-
-
+    
   };
 
     // Delete review //Add delete button first
@@ -186,8 +185,9 @@
 
   const [modalVisible, setModalVisible] = useState(false);
 
-  const handleSubmitRating = (newRating: number) => {
+  const handleSubmitRating = (newRating: number, containsSpoiler: boolean) => {
     setMyRating(newRating);   
+    setHasSpoiler(containsSpoiler);
     insertReview();              
   };
 
