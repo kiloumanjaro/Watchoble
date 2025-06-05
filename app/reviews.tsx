@@ -5,6 +5,7 @@
   import ReviewCover from '~/components/ui/reviewcover';
   import ReviewCard from '~/components/ui/reviewcard';
   import ReviewInput from '~/components/ui/reviewinput';
+  import ReviewSubmit from '~/components/ui/reviewsubmit';
   import { Text } from '~/components/ui/text';
   import { Tags } from 'lucide-react-native';
   import { History } from 'lucide-react-native';
@@ -39,6 +40,7 @@
     const params = useLocalSearchParams();
     const movieParam = Array.isArray(params.movie) ? params.movie[0] : params.movie;
     const movie = movieParam ? JSON.parse(movieParam) : null;
+    const [reviewText, setReviewText] = useState('');
     const navigation = useNavigation();
     const { colors } = useTheme();
     const [rating, setRating] = useState(0);
@@ -64,7 +66,6 @@
   const [reviewsData, setReviewsData] = useState<any[]>([]);
 
   // State for inserting review
-  const [reviewTitle, setReviewTitle] = useState('');
   const [content, setContent] = useState('');
   const [hasSpoiler, setHasSpoiler] = useState(false);
   const [myRating, setMyRating] = useState(0);
@@ -75,7 +76,6 @@
     const { data, error } = await supabase
       .from('review')
       .select(`
-        review_title,
         content,
         has_spoiler,
         rating,
@@ -102,7 +102,7 @@
   
     const userId = userData.user.id;
 
-    if(!reviewTitle || !content || myRating === 0) {
+    if(!content || myRating === 0) {
       Alert.alert('Error', 'Please fill in all fields');
       return;
     }
@@ -113,7 +113,6 @@
         {
           userID: userId,
           movieID: movie.id,
-          review_title: reviewTitle,
           content,
           has_spoiler: hasSpoiler,
           rating: myRating,
@@ -131,12 +130,14 @@
     }
 
     Alert.alert('Success', 'Review added!');
-    setReviewTitle(''); // Clear inputs
     setContent('');
+    setReviewText('');
     setHasSpoiler(false);
     setMyRating(0);
     setDate(new Date().toISOString());
     getReviewsData(); // Refresh reviews
+
+
   };
 
     // Delete review //Add delete button first
@@ -174,9 +175,8 @@
     ({ item }: { item: typeof reviewsData[0] }) => (
       <ReviewCard
         username={item.users.username}
-        review_title={item.review_title}
         content={item.content}
-        has_spoiler={item.has_spoiler}
+        has_spoiler={item.has_spoiler ?? false}
         rating={item.rating}
         date={item.date}
       />
@@ -184,6 +184,12 @@
     []
   );
 
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleSubmitRating = (newRating: number) => {
+    setMyRating(newRating);   
+    insertReview();              
+  };
 
   const genreNames = movie.genre_ids
     ?.map((id: number) => genreIdMap[id])
@@ -196,17 +202,21 @@
       data={reviewsData}
       keyExtractor={(item) => item.id}
       renderItem={renderReviewCard}
-      contentContainerStyle={{ paddingBottom: 100 }}
+      removeClippedSubviews={false}
+      contentContainerStyle={{ paddingBottom: 100, flex: 1}}
       ListHeaderComponent={
         <>
           <TouchableOpacity
-            onPress={() => navigation.goBack()}
+            onPress={() => {
+              console.log('Chevron clicked'); // Debug line
+              navigation.goBack();
+            }}
             style={styles.backButton}
           >
             <ChevronLeft strokeWidth={1.5} size={25} color={colors.text} />
           </TouchableOpacity>
 
-          <View className="gap-1 bg-secondary/30">
+          <View className="gap-1">
             <ReviewCover path={movie.backdrop_path} vote_average={movie.vote_average} poster_path={movie.poster_path} />
 
             <View className="p-6 flex-row">
@@ -251,10 +261,23 @@
             </View>
 
             <View className="pl-5 pr-5 pt-5">
-              <ReviewInput onPress={insertReview} /> {/* Review input component for adding new reviews */}
+              <ReviewInput
+                value={reviewText}
+                onChangeText={setReviewText}
+                onSendReview={() => {
+                  setModalVisible(true);
+                  setContent(reviewText); // Sync content with reviewText
+                }}
+              />
+       
               <Text className="mb-4 text-lg font-semibold">Reviews</Text>
             </View>
           </View>
+          <ReviewSubmit
+            visible={modalVisible}
+            onClose={() => setModalVisible(false)}
+            onSubmit={handleSubmitRating}
+          />
         </>
       }
       showsVerticalScrollIndicator={false}
