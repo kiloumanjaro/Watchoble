@@ -5,6 +5,7 @@
   import ReviewCover from '~/components/ui/reviewcover';
   import ReviewCard from '~/components/ui/reviewcard';
   import ReviewInput from '~/components/ui/reviewinput';
+  import ReviewSubmit from '~/components/ui/reviewsubmit';
   import { Text } from '~/components/ui/text';
   import { Tags } from 'lucide-react-native';
   import { History } from 'lucide-react-native';
@@ -132,6 +133,11 @@
     []
   );
 
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const handleSubmitRating = (newRating: number) => {
+    console.log('Submitted rating:', newRating);
+  };
 
   const genreNames = movie.genre_ids
     ?.map((id: number) => genreIdMap[id])
@@ -145,16 +151,18 @@
       keyExtractor={(item) => item.id}
       renderItem={renderReviewCard}
       removeClippedSubviews={false}
-      contentContainerStyle={{ paddingBottom: 100}}
+      contentContainerStyle={{ paddingBottom: 100, flex: 1}}
       ListHeaderComponent={
         <>
           <TouchableOpacity
-            onPress={() => navigation.goBack()}
+            onPress={() => {
+              console.log('Chevron clicked'); // Debug line
+              navigation.goBack();
+            }}
             style={styles.backButton}
           >
             <ChevronLeft strokeWidth={1.5} size={25} color={colors.text} />
           </TouchableOpacity>
-
           <View className="gap-1">
             <ReviewCover path={movie.backdrop_path} vote_average={movie.vote_average} poster_path={movie.poster_path} />
 
@@ -200,13 +208,22 @@
             </View>
 
             <View className="pl-5 pr-5 pt-5">
-              <ReviewInput />
+              <ReviewInput onSendReview={() => setModalVisible(true)} />
               <Text className="mb-4 text-lg font-semibold">Reviews</Text>
             </View>
           </View>
+          
+          <ReviewSubmit
+            visible={modalVisible}
+            onClose={() => setModalVisible(false)}
+            onSubmit={handleSubmitRating}
+          />
+
         </>
       }
       showsVerticalScrollIndicator={false}
+
+      
     />
   );
 
@@ -225,3 +242,5 @@
       padding: 8,
     },
   });
+
+
