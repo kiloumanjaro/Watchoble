@@ -15,8 +15,6 @@
   import {
     Card,
   } from '~/components/ui/card';
-
-
   
   const genreIdMap: { [key: number]: string } = {
     28: 'Action',
@@ -180,10 +178,8 @@
     setReviewText('');
     setDate(new Date().toISOString());
     getReviewsData(); // Refresh reviews
-    
   };
 
-    // Delete review //Add delete button first
   const deleteReview = async () => {
     // Get current user
     const { data: userData, error: userError } = await supabase.auth.getUser();
@@ -322,8 +318,7 @@
           />
         </>
       }
-      showsVerticalScrollIndicator={false}
-      
+      showsVerticalScrollIndicator={false}      
     />
   );
 
