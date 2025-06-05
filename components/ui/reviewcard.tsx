@@ -38,7 +38,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ username, review, date, has_spo
       defaultValue={has_spoiler ? undefined : ['item-1']}
       onValueChange={(values) => setIsOpen(values.includes('item-1'))}
     >
-      <AccordionItem value='item-1'>
+      <AccordionItem value='item-1' className='bg-card'>
         <AccordionTrigger>
           {has_spoiler && !isOpen && (
           <View className="absolute top-0 left-0 right-0 bottom-0 z-10 overflow-hidden rounded-xl">

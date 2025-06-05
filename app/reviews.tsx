@@ -144,7 +144,8 @@
       data={reviewsData}
       keyExtractor={(item) => item.id}
       renderItem={renderReviewCard}
-      contentContainerStyle={{ paddingBottom: 100 }}
+      removeClippedSubviews={false}
+      contentContainerStyle={{ paddingBottom: 100}}
       ListHeaderComponent={
         <>
           <TouchableOpacity
@@ -154,7 +155,7 @@
             <ChevronLeft strokeWidth={1.5} size={25} color={colors.text} />
           </TouchableOpacity>
 
-          <View className="gap-1 bg-secondary/30">
+          <View className="gap-1">
             <ReviewCover path={movie.backdrop_path} vote_average={movie.vote_average} poster_path={movie.poster_path} />
 
             <View className="p-6 flex-row">
