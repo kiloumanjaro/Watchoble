@@ -1,7 +1,7 @@
-  import { View, ScrollView, Image, TouchableOpacity, StyleSheet, FlatList} from 'react-native';
-  import React, { useCallback, useState, useLayoutEffect } from 'react';
+  import { View, ScrollView, Image, TouchableOpacity, StyleSheet, FlatList, Alert} from 'react-native';
+  import React, { useCallback, useState, useLayoutEffect, useEffect } from 'react';
   import { useNavigation, useTheme } from '@react-navigation/native';
-  import { useLocalSearchParams } from 'expo-router';
+  import { useLocalSearchParams, Redirect } from 'expo-router';
   import ReviewCover from '~/components/ui/reviewcover';
   import ReviewCard from '~/components/ui/reviewcard';
   import ReviewInput from '~/components/ui/reviewinput';
@@ -10,6 +10,7 @@
   import { History } from 'lucide-react-native';
   import { Star } from 'lucide-react-native';
   import { ChevronLeft } from 'lucide-react-native';
+  import { supabase } from '@/lib/supabase';
   import {
     Card,
   } from '~/components/ui/card';
@@ -58,64 +59,125 @@
         </View>
       );
     }
+  
+  // State for fetching reviews
+  const [reviewsData, setReviewsData] = useState<any[]>([]);
 
-  const reviewsData = [
-    {
-      id: '1',
-      username: 'Kint',
-      review:
-        'Director Sam Mendes, inspired by stories from his grandfather, delivers a powerful anti-war film that is both intimate and epic. The real-time, “one-shot” camera technique (masterfully shot by Roger Deakins) gives the film an immersive quality rarely seen in war cinema.',
-      date: new Date('2024-05-01'),
-    },
-    {
-      id: '2',
-      username: 'Kint',
-      review:
-        'Director Sam Mendes, inspired by stories from his grandfather, delivers a powerful anti-war film that is both intimate and epic. The real-time, “one-shot” camera technique (masterfully shot by Roger Deakins) gives the film an immersive quality rarely seen in war cinema.',
-      date: new Date('2024-05-01'),
-    },      
-       {
-      id: '3',
-      username: 'Kint',
-      review:
-        'Director Sam Mendes, inspired by stories from his grandfather, delivers a powerful anti-war film that is both intimate and epic. The real-time, “one-shot” camera technique (masterfully shot by Roger Deakins) gives the film an immersive quality rarely seen in war cinema.',
-      date: new Date('2024-05-01'),
-    },
-        {
-      id: '4',
-      username: 'Kint',
-      review:
-        'Director Sam Mendes, inspired by stories from his grandfather, delivers a powerful anti-war film that is both intimate and epic. The real-time, “one-shot” camera technique (masterfully shot by Roger Deakins) gives the film an immersive quality rarely seen in war cinema.',
-      date: new Date('2024-05-01'),
-    },
-        {
-      id: '5',
-      username: 'Kint',
-      review:
-        'Director Sam Mendes, inspired by stories from his grandfather, delivers a powerful anti-war film that is both intimate and epic. The real-time, “one-shot” camera technique (masterfully shot by Roger Deakins) gives the film an immersive quality rarely seen in war cinema.',
-      date: new Date('2024-05-01'),
-    },
-        {
-      id: '6',
-      username: 'Kint',
-      review:
-        'Director Sam Mendes, inspired by stories from his grandfather, delivers a powerful anti-war film that is both intimate and epic. The real-time, “one-shot” camera technique (masterfully shot by Roger Deakins) gives the film an immersive quality rarely seen in war cinema.',
-      date: new Date('2024-05-01'),
-    }, 
-        {
-      id: '7',
-      username: 'Kint',
-      review:
-        'Director Sam Mendes, inspired by stories from his grandfather, delivers a powerful anti-war film that is both intimate and epic. The real-time, “one-shot” camera technique (masterfully shot by Roger Deakins) gives the film an immersive quality rarely seen in war cinema.',
-      date: new Date('2024-05-01'),
-    },
-  ];
+  // State for inserting review
+  const [reviewTitle, setReviewTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [hasSpoiler, setHasSpoiler] = useState(false);
+  const [myRating, setMyRating] = useState(0);
+  const [date, setDate] = useState(new Date().toISOString()); // ISO format for Supabase
 
+  // Fetch all reviews
+  const getReviewsData = async () => {
+    const { data, error } = await supabase
+      .from('review')
+      .select(`
+        review_title,
+        content,
+        has_spoiler,
+        rating,
+        date,
+        users!review_userID_fkey(username)
+      `)
+      .eq('movieID', movie.id);
+
+    if (error) {
+      Alert.alert('Error', 'Failed to fetch reviews');
+      return;
+    }
+    setReviewsData(data || []);
+  };
+
+  // Insert review
+  const insertReview = async () => {
+    // Get current user
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+    if (userError || !userData.user) {
+      Alert.alert('Error', 'Please log in to add a review');
+      return
+    }
+  
+    const userId = userData.user.id;
+
+    if(!reviewTitle || !content || myRating === 0) {
+      Alert.alert('Error', 'Please fill in all fields');
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from('review')
+      .insert([
+        {
+          userID: userId,
+          movieID: movie.id,
+          review_title: reviewTitle,
+          content,
+          has_spoiler: hasSpoiler,
+          rating: myRating,
+          date,
+        },
+      ]);
+
+    if (error) {
+      if (error.code === '23505') {
+        Alert.alert('Error', 'You have already reviewed this movie');
+        return;
+      }
+      Alert.alert('Error', 'Failed to add review');
+      return;
+    }
+
+    Alert.alert('Success', 'Review added!');
+    setReviewTitle(''); // Clear inputs
+    setContent('');
+    setHasSpoiler(false);
+    setMyRating(0);
+    setDate(new Date().toISOString());
+    getReviewsData(); // Refresh reviews
+  };
+
+    // Delete review //Add delete button first
+  const deleteReview = async () => {
+    // Get current user
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+    if (userError || !userData.user) {
+      Alert.alert('Error', 'Please log in to add a review');
+      return
+    }
+  
+    const userId = userData.user.id;
+
+    const { data, error } = await supabase
+    .from('review')
+    .delete()
+    .eq('userID', userId)
+    .eq('movieID', movie.id);
+
+    if (error) {
+      Alert.alert('Error', 'Failed to delete review');
+      return;
+    }
+
+    Alert.alert('Success', 'Review deleted successfully');
+    getReviewsData(); // Refresh reviews
+  }
+
+  // Fetch reviews on mount
+  useEffect(() => {
+    getReviewsData();
+  }, []);
+  
   const renderReviewCard = useCallback(
     ({ item }: { item: typeof reviewsData[0] }) => (
       <ReviewCard
-        username={item.username}
-        review={item.review}
+        username={item.users.username}
+        review_title={item.review_title}
+        content={item.content}
+        has_spoiler={item.has_spoiler}
+        rating={item.rating}
         date={item.date}
       />
     ),
@@ -189,7 +251,7 @@
             </View>
 
             <View className="pl-5 pr-5 pt-5">
-              <ReviewInput />
+              <ReviewInput onPress={insertReview} /> {/* Review input component for adding new reviews */}
               <Text className="mb-4 text-lg font-semibold">Reviews</Text>
             </View>
           </View>
