@@ -32,8 +32,8 @@ const films = () => {
         <Button variant={"outline"} 
           style={{
             height: 40,
-            justifyContent: 'center',
-            alignItems: 'center',
+
+
           }}
         >
           <Text>Reviews</Text>

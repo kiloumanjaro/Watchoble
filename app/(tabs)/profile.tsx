@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { useState, useEffect } from 'react';
+import { View, Alert } from 'react-native';
 import Animated, { FadeInUp, FadeOutDown, LayoutAnimationConfig } from 'react-native-reanimated';
 import { Info } from '~/lib/icons/Info';
 import { Avatar, AvatarFallback, AvatarImage } from '~/components/ui/avatar';
@@ -15,6 +16,7 @@ import {
 import { Progress } from '~/components/ui/progress';
 import { Text } from '~/components/ui/text';
 import { Tooltip, TooltipContent, TooltipTrigger } from '~/components/ui/tooltip';
+import { supabase } from '~/lib/supabase';
 
 const GITHUB_AVATAR_URI =
   'https://i.pinimg.com/originals/ef/a2/8d/efa28d18a04e7fa40ed49eeb0ab660db.jpg';
@@ -22,10 +24,38 @@ const GITHUB_AVATAR_URI =
 export default function Screen() {
   const [progress, setProgress] = React.useState(78);
 
+  // State for fetching user data 
+  const [userdata, setuserData] = useState<any>();
 
+  useEffect (() => {
+    const getprofileData = async () => {
+      const { data: userData, error: userError } = await supabase.auth.getUser();
+        if (userError || !userData.user) {
+          Alert.alert('Error', 'Please log in to add a review');
+          return
+        }
+      
+      const userId = userData.user.id;
+      const { data, error } = await supabase
+          .from('users')
+          .select('*')
+          .eq('id', userId)
+
+        if (error) {
+          Alert.alert('Error', 'Failed to fetch user data');
+          return;
+        }
+        setuserData(data?.[0] || null);
+      };
+      
+    getprofileData();
+  }, []);
+
+  function updateProgressValue() {
+    setProgress(Math.floor(Math.random() * 100));
+  }
   return (
- 
-      <View className='flex-1 justify-center p-6 gap-5 bg-secondary/30'>
+<View className='flex-1 justify-center p-6 gap-5 bg-secondary/30'>
         <View className='items-center'>
         <Card className='w-full max-w-sm p-6 rounded-2xl'>
           <CardHeader className='items-center'>
@@ -90,7 +120,5 @@ export default function Screen() {
           {/* <ScrollView horizontal showsHorizontalScrollIndicator={false}></ScrollView> */}
         </View>
       </View>
-   
-
   );
 }

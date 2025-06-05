@@ -5,19 +5,19 @@ import { useTheme } from '@react-navigation/native';
 import { SendHorizontal } from 'lucide-react-native';
 
 type ReviewInputProps = {
-  onSendReview?: () => void; // Make it optional for flexibility
+  value: string;
+  onChangeText: (text: string) => void;
+  onSendReview?: () => void;
 };
 
-const ReviewInput: React.FC<ReviewInputProps> = ({ onSendReview }) => {
+const ReviewInput: React.FC<ReviewInputProps> = ({ value, onChangeText, onSendReview }) => {
   const { colors } = useTheme();
-  const [reviewText, setReviewText] = useState('');
 
   const handleSubmit = () => {
-    if (reviewText.trim()) {
-      console.log('Submit clicked'); // Debug line
-      console.log('Submitted review:', reviewText);
-      setReviewText('');
-      onSendReview?.(); // Trigger the modal
+    if (value.trim()) {
+      console.log('Submit clicked');
+      console.log('Submitted review:', value);
+      onSendReview?.();
     }
   };
 
@@ -30,8 +30,8 @@ const ReviewInput: React.FC<ReviewInputProps> = ({ onSendReview }) => {
             multiline
             placeholder="Write your review..."
             placeholderTextColor={colors.text + '80'}
-            value={reviewText}
-            onChangeText={setReviewText}
+            value={value}
+            onChangeText={onChangeText}
             style={{ minHeight: 60 }}
           />
         </View>
@@ -42,5 +42,6 @@ const ReviewInput: React.FC<ReviewInputProps> = ({ onSendReview }) => {
     </View>
   );
 };
+
 
 export default ReviewInput;
