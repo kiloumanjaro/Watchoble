@@ -9,7 +9,6 @@ type Props = {
     item: ImageSliderType;
     index: number;
     scrollX: SharedValue<number>
-
 }
 
 const {width} = Dimensions.get('screen');
@@ -39,7 +38,7 @@ export const SliderItem = ({item, index, scrollX}: Props) => {
 
     });
     return (
-        <Animated.View style={styles.itemContainer}>
+        <Animated.View style={[styles.itemContainer, rnAnimatedStyle]}>
             <Image source={item.image} style={{width:width, height:480}} />
             <LinearGradient className='flex-1 p-20' colors={['transparent', 'rgba(0,0,0,0.8)']} style={styles.background}/>
             <View className="justify-end items-center flex-col" style={styles.background}>

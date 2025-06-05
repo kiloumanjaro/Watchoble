@@ -14,7 +14,8 @@ import { ImageSlider } from '@/data/SliderData';
 import SearchResults from '~/components/ui/SearchResults';
 import { Movie } from '@/services/api/movieService';
 import { useSearch } from '../hooks/useSearch';
-
+import { GenreData } from '~/data/GenreData';
+  
 type GenreDetailsNavigationProp = NativeStackNavigationProp<RootStackParamList, 'playlist'>;
 
 
@@ -24,6 +25,7 @@ interface Person {
   profile_path?: string;
   known_for_department?: string;
 }
+
 
 const index = () => {
   const navigation = useNavigation<GenreDetailsNavigationProp>(); 
@@ -114,27 +116,25 @@ const index = () => {
         </View>
       </View>
 
-      <View className="mt-4">
-        <Text className='text-xl font-semibold ml-5'>Film Genres</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <View className="flex-row">
-            {[
-              'Action', 'Adventure', 'Animation', 'Comedy', 'Crime', 'Drama',
-              'Family', 'Fantasy', 'History', 'Horror', 'Music', 'Mystery',
-              'Romance', 'Science Fiction', 'TV Movie', 'Thriller', 'War', 'Western'
-            ].map((genre) => (
-              <Genre
-                key={genre}
-                name={genre}
-                items={30}
-                movieId={genreIdMap[genre] ?? 0}  // Pass movieId instead of genre name
-                genre={genre}  // Pass the genre name (if needed in the playlist page)
-                onPress={() => handleGenrePress(genre)}  // Handle the press
-              />
-            ))}
-          </View>
-        </ScrollView>
-      </View>
+    <View className="mt-4">
+      <Text className="text-xl font-semibold ml-5">Film Genres</Text>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <View className="flex-row">
+          {GenreData.map((genreItem) => (
+            <Genre
+              key={genreItem.genre}
+              name={genreItem.name}
+              items={genreItem.items}
+              movieId={genreIdMap[genreItem.genre] ?? 0}
+              genre={genreItem.genre}
+              image={genreItem.image}
+              onPress={() => handleGenrePress(genreItem.genre)}
+            />
+          ))}
+        </View>
+      </ScrollView>
+    </View>
+
 
       <View className='mt-5'>
         <Text className='text-xl font-semibold ml-5'>People</Text>
