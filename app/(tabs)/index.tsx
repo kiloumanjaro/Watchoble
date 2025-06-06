@@ -149,14 +149,6 @@ const index = () => {
           />
         </View>
       </View>
-
-      <View className='w-full mt-5'>
-        <Text className='text-xl font-semibold ml-5'>Media Type</Text>
-        <View className='flex-row w-flex m-1'>
-          <Media name='TV Show'/>
-          <Media name='Movies'/>
-        </View>
-      </View>
     </ScrollView>
   );
 };
