@@ -29,27 +29,78 @@ export default function Screen() {
   // State for fetching user data 
   const [userdata, setuserData] = useState<any>();
 
-  useEffect (() => {
-    const getprofileData = async () => {
-      const { data: userData, error: userError } = await supabase.auth.getUser();
-        if (userError || !userData.user) {
-          Alert.alert('Error', 'Please log in to add a review');
-          return
-        }
-      
-      const userId = userData.user.id;
-      const { data, error } = await supabase
-          .from('users')
-          .select('*')
-          .eq('id', userId)
 
-        if (error) {
-          Alert.alert('Error', 'Failed to fetch user data');
-          return;
-        }
-        setuserData(data?.[0] || null);
-      };
-      
+  const getprofileData = async () => {
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+      if (userError || !userData.user) {
+        Alert.alert('Error', 'Please log in first');
+        return
+      }
+    
+    const userId = userData.user.id;
+    const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', userId)
+
+      if (error) {
+        Alert.alert('Error', 'Failed to fetch user data');
+        return;
+      }
+      setuserData(data?.[0] || null);
+    };
+  getprofileData();
+
+  const updateUserProfile = async (
+    newUsername: string,
+    firstname: string,
+    lastname: string,
+    bio: string
+  ) => {
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+    if (userError || !userData?.user) {
+      Alert.alert('Error', 'Please log in first');
+      return;
+    }
+
+    const userId = userData.user.id;
+
+    const { data: existingUser, error: checkError } = await supabase
+      .from('users')
+      .select('id')
+      .eq('username', newUsername)
+      .neq('id', userId)
+      .maybeSingle();
+
+    if (checkError) {
+      Alert.alert('Error', 'Failed to check username availability');
+      return;
+    }
+
+    if (existingUser) {
+      Alert.alert('Error', 'Username already taken');
+      return;
+    }
+
+    const { error: updateError } = await supabase
+      .from('user')
+      .update({
+        username: newUsername,
+        firstname,
+        lastname,
+        bio,
+      })
+      .eq('id', userId);
+
+    if (updateError) {
+      Alert.alert('Error', 'Failed to update profile');
+      return;
+    }
+
+    Alert.alert('Success', 'Profile updated successfully');
+  };
+
+  useEffect (() => {
     getprofileData();
   }, []);
 
