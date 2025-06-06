@@ -28,29 +28,76 @@ export default function ProfileScreen() {
   const [isEditVisible, setEditVisible] = useState(false);
   const { colors } = useTheme();
 
-  useEffect(() => {
-    const getProfileData = async () => {
-      const { data: userData, error: userError } = await supabase.auth.getUser();
-      if (userError || !userData.user) {
-        Alert.alert('Error', 'Please log in to add a review');
-        return;
-      }
 
-      const userId = userData.user.id;
-      const { data, error } = await supabase
+  const getprofileData = async () => {
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+      if (userError || !userData.user) {
+        Alert.alert('Error', 'Please log in first');
+        return
+      }
+    
+    const userId = userData.user.id;
+    const { data, error } = await supabase
         .from('users')
         .select('*')
-        .eq('id', userId);
+        .eq('id', userId)
+        .single();
 
       if (error) {
         Alert.alert('Error', 'Failed to fetch user data');
         return;
       }
-
-      setUserData(data?.[0] || null);
+      setUserData(data || null);
     };
+  getprofileData();
 
-    getProfileData();
+  const updateUserProfile = async (newProfiledata: any) => {
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+    if (userError || !userData?.user) {
+      Alert.alert('Error', 'Please log in first');
+      return;
+    }
+
+    const userId = userData.user.id;
+
+    const { data: existingUser, error: checkError } = await supabase
+      .from('users')
+      .select('id')
+      .eq('username', newProfiledata.username)
+      .neq('id', userId)
+      .maybeSingle();
+
+    if (checkError) {
+      Alert.alert('Error', 'Failed to check username availability');
+      return;
+    }
+
+    if (existingUser) {
+      Alert.alert('Error', 'Username already taken');
+      return;
+    }
+
+    const { error: updateError } = await supabase
+      .from('users')
+      .update({
+        username: newProfiledata.username,
+        firstname: newProfiledata.firstname,
+        lastname: newProfiledata.lastname,
+        bio: newProfiledata.bio,
+      })
+      .eq('id', userId);
+
+    if (updateError) {
+      Alert.alert('Error', 'Failed to update profile');
+      return;
+    }
+
+    Alert.alert('Success', 'Profile updated successfully');
+    getprofileData();
+  };
+
+  useEffect (() => {
+    getprofileData();
   }, []);
 
   function updateProgressValue() {
@@ -112,23 +159,13 @@ export default function ProfileScreen() {
           visible={isEditVisible}
           onClose={() => setEditVisible(false)}
           onSave={async (updatedProfile) => {
-            setUserData((prev: any) => ({ ...prev, ...updatedProfile }));
-
-            const { error } = await supabase
-              .from('users')
-              .update(updatedProfile)
-              .eq('id', userdata.id);
-
-            if (error) {
-              Alert.alert('Error', 'Failed to update profile.');
-            } else {
-              Alert.alert('Success', 'Profile updated successfully.');
-            }
+          setUserData((prev: any) => ({ ...prev, ...updatedProfile }));
+          updateUserProfile(updatedProfile);
           }}
           initialProfile={{
             username: userdata?.username ?? '',
-            firstName: userdata?.firstname ?? '',
-            lastName: userdata?.lastname ?? '',
+            firstname: userdata?.firstname ?? '',
+            lastname: userdata?.lastname ?? '',
             bio: userdata?.bio ?? '',
           }}
         />

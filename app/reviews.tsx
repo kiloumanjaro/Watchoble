@@ -135,11 +135,6 @@
           title: movie.title
         },
       ]);
-
-      if (movieError) {
-        Alert.alert('Error', 'Failed to insert movie data');
-        return;
-      }
     
     const { data:movieRatings, error:errorRatings } = await supabase
     .from('movie')

@@ -9,14 +9,14 @@ type EditProfileModalProps = {
   onClose: () => void;
   onSave: (profile: {
     username: string;
-    firstName: string;
-    lastName: string;
+    firstname: string;
+    lastname: string;
     bio: string;
   }) => void;
   initialProfile: {
     username: string;
-    firstName: string;
-    lastName: string;
+    firstname: string;
+    lastname: string;
     bio: string;
   };
 };
@@ -28,13 +28,13 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
   initialProfile,
 }) => {
   const [username, setUsername] = useState(initialProfile.username);
-  const [firstName, setFirstName] = useState(initialProfile.firstName);
-  const [lastName, setLastName] = useState(initialProfile.lastName);
+  const [firstname, setFirstName] = useState(initialProfile.firstname);
+  const [lastname, setLastName] = useState(initialProfile.lastname);
   const [bio, setBio] = useState(initialProfile.bio);
   const { colors } = useTheme();
 
   const handleSave = () => {
-    onSave({ username, firstName, lastName, bio });
+    onSave({ username, firstname, lastname, bio });
     onClose();
   };
 
@@ -61,7 +61,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
 
           {/* First Name */}
           <TextInput
-            value={firstName}
+            value={firstname}
             onChangeText={setFirstName}
             placeholder="First Name"
             className="border border-border rounded-lg px-4 py-2 text-base text-foreground"
@@ -70,7 +70,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
 
           {/* Last Name */}
           <TextInput
-            value={lastName}
+            value={lastname}
             onChangeText={setLastName}
             placeholder="Last Name"
             className="border border-border rounded-lg px-4 py-2 text-base text-foreground"
