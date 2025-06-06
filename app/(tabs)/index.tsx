@@ -137,7 +137,7 @@ const index = () => {
 
 
       <View className='mt-5'>
-        <Text className='text-xl font-semibold ml-5'>People</Text>
+        <Text className='text-xl font-semibold ml-5'>Trending People</Text>
         <View className='w-full mt-1'>
           <FlatList
             data={trendingPeople}
