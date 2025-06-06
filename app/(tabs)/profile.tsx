@@ -41,21 +41,17 @@ export default function ProfileScreen() {
         .from('users')
         .select('*')
         .eq('id', userId)
+        .single();
 
       if (error) {
         Alert.alert('Error', 'Failed to fetch user data');
         return;
       }
-      setUserData(data?.[0] || null);
+      setUserData(data || null);
     };
   getprofileData();
 
-  const updateUserProfile = async (
-    newUsername: string,
-    firstname: string,
-    lastname: string,
-    bio: string
-  ) => {
+  const updateUserProfile = async () => {
     const { data: userData, error: userError } = await supabase.auth.getUser();
     if (userError || !userData?.user) {
       Alert.alert('Error', 'Please log in first');
@@ -67,7 +63,7 @@ export default function ProfileScreen() {
     const { data: existingUser, error: checkError } = await supabase
       .from('users')
       .select('id')
-      .eq('username', newUsername)
+      .eq('username', userdata.username)
       .neq('id', userId)
       .maybeSingle();
 
@@ -84,10 +80,10 @@ export default function ProfileScreen() {
     const { error: updateError } = await supabase
       .from('user')
       .update({
-        username: newUsername,
-        firstname,
-        lastname,
-        bio,
+        username: userdata.username,
+        firstname: userdata.firstname,
+        lastname: userdata.lastname,
+        bio: userdata.bio,
       })
       .eq('id', userId);
 
@@ -97,6 +93,7 @@ export default function ProfileScreen() {
     }
 
     Alert.alert('Success', 'Profile updated successfully');
+    getprofileData();
   };
 
   useEffect (() => {
@@ -162,18 +159,8 @@ export default function ProfileScreen() {
           visible={isEditVisible}
           onClose={() => setEditVisible(false)}
           onSave={async (updatedProfile) => {
-            setUserData((prev: any) => ({ ...prev, ...updatedProfile }));
-
-            const { error } = await supabase
-              .from('users')
-              .update(updatedProfile)
-              .eq('id', userdata.id);
-
-            if (error) {
-              Alert.alert('Error', 'Failed to update profile.');
-            } else {
-              Alert.alert('Success', 'Profile updated successfully.');
-            }
+          setUserData((prev: any) => ({ ...prev, ...updatedProfile }));
+          updateUserProfile();
           }}
           initialProfile={{
             username: userdata?.username ?? '',
@@ -191,8 +178,6 @@ export default function ProfileScreen() {
         <Text className="text-lg font-semibold">Followings</Text>
         {/* <ScrollView horizontal showsHorizontalScrollIndicator={false}></ScrollView> */}
       </View>
-
-
     </View>
   );
 }
