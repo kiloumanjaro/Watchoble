@@ -23,9 +23,10 @@ interface UserReview {
 
 interface UserReviewProps {
   review: UserReview;
+  onDelete: () => void;
 }
 
-const UserReview: React.FC<UserReviewProps> = ({ review }) => {
+const UserReview: React.FC<UserReviewProps> = ({ review, onDelete }) => {
   const [rating, setRating] = useState(0);
   const { colors } = useTheme();
   const isLongTitle = review.title.length > 27; // adjust threshold as needed
@@ -74,7 +75,7 @@ const UserReview: React.FC<UserReviewProps> = ({ review }) => {
             </View>
           </View>
             <View className='absolute right-5 z-50 bg-card overflow-hidden'>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={onDelete}>
               <Trash2 strokeWidth={1.5} size={18} color={'#FF0000'} />
               </TouchableOpacity>
             </View>

@@ -9,6 +9,7 @@ import { useTheme } from '@react-navigation/native';
 import { Toggle } from '~/components/ui/toggle';
 import React from 'react';
 import { useRouter } from 'expo-router';
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 // Define the shape of each item
 type ReviewItem = {
@@ -37,43 +38,111 @@ const Films = () => {
     router.push('/explore');
   };
 
-  React.useEffect(() => {
-    const getReviewsAndMovies = async () => {
-      const { data: userData, error: userError } = await supabase.auth.getUser();
-      if (userError || !userData?.user) {
-        Alert.alert('Error', 'Please log in to add a review');
+  const getReviewsAndMovies = async () => {
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+    if (userError || !userData?.user) {
+      Alert.alert('Error', 'Please log in to add a review');
+      return;
+    }
+
+    const userId = userData.user.id;
+
+    const { data: reviews, error: reviewError } = await supabase
+      .from('review')
+      .select('*')
+      .eq('userID', userId);
+
+    if (reviewError || !reviews) {
+      Alert.alert('Error', 'Failed to fetch reviews from supabase');
+      return;
+    }
+
+    try {
+      const enrichedReviews = await Promise.all(
+        reviews.map(async (review) => {
+          const movie = await fetchSingleMovie(review.movieID);
+          return {
+            ...review,
+            movie,
+          };
+        })
+      );
+      setReviewdata(enrichedReviews);
+    } catch (error: any) {
+      Alert.alert('Error', 'Failed to enrich reviews: ' + error.message);
+    }
+  };
+  getReviewsAndMovies();
+
+  const deleteReview = async (tbdata: ReviewItem) => {
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+    if (userError || !userData.user) {
+      Alert.alert('Error', 'Please log in to delete a review');
+      return;
+    }
+
+    const userId = userData.user.id;
+
+    const { data: movieData, error: movieError } = await supabase
+      .from('movie')
+      .select('avg_rating, review_count')
+      .eq('movieID', tbdata.movie.id)
+      .single();
+
+    if (movieError || !movieData) {
+      Alert.alert('Error', 'Failed to fetch movie details');
+      return;
+    }
+
+    const currentAvg = movieData.avg_rating || 0;
+    const currentCount = movieData.review_count || 0;
+    const deletedRating = tbdata.ratings;
+
+    const { error: deleteError } = await supabase
+      .from('review')
+      .delete()
+      .eq('reviewID', tbdata.reviewID);
+
+    if (deleteError) {
+      Alert.alert('Error', 'Failed to delete review');
+      return;
+    }
+
+    if (currentCount <= 1) {
+      // No more reviews left, delete movie
+      const { error: deleteMovieError } = await supabase
+        .from('movie')
+        .delete()
+        .eq('movieID', tbdata.movie.id);
+
+      if (deleteMovieError) {
+        Alert.alert('Error', 'Failed to delete movie');
         return;
       }
+    } else {
+      const newAvg = (currentAvg * currentCount - deletedRating) / (currentCount - 1);
 
-      const userId = userData.user.id;
+      const { error: updateMovieError } = await supabase
+        .from('movie')
+        .update({
+          avg_rating: newAvg,
+          review_count: currentCount - 1,
+        })
+        .eq('movieID', tbdata.movie.id);
 
-      const { data: reviews, error: reviewError } = await supabase
-        .from('review')
-        .select('*')
-        .eq('userID', userId);
-
-      if (reviewError || !reviews) {
-        Alert.alert('Error', 'Failed to fetch reviews from supabase');
+      if (updateMovieError) {
+        Alert.alert('Error', 'Failed to update movie stats');
         return;
       }
+    }
 
-      try {
-        const enrichedReviews = await Promise.all(
-          reviews.map(async (review) => {
-            const movie = await fetchSingleMovie(review.movieID);
-            return {
-              ...review,
-              movie,
-            };
-          })
-        );
-        setReviewdata(enrichedReviews);
-      } catch (error: any) {
-        Alert.alert('Error', 'Failed to enrich reviews: ' + error.message);
-      }
-    };
-
+    Alert.alert('Success', 'Review deleted and stats updated');
     getReviewsAndMovies();
+  };
+
+  
+  React.useEffect(() => {
+  getReviewsAndMovies();
   }, []);
 
   return (
@@ -110,7 +179,7 @@ const Films = () => {
             review: item.content,
             date: item.date ? new Date(item.date) : new Date(),
             ratings: item.ratings,
-          }} />}
+          }} onDelete={() => deleteReview(item)} />}
           ListEmptyComponent={<Text className='text-center mt-4'>No reviews found.</Text>}
         />
       </View>

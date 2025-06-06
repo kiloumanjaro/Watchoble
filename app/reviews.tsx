@@ -180,31 +180,6 @@
     getReviewsData(); // Refresh reviews
   };
 
-  const deleteReview = async () => {
-    // Get current user
-    const { data: userData, error: userError } = await supabase.auth.getUser();
-    if (userError || !userData.user) {
-      Alert.alert('Error', 'Please log in to add a review');
-      return
-    }
-  
-    const userId = userData.user.id;
-
-    const { data, error } = await supabase
-    .from('review')
-    .delete()
-    .eq('userID', userId)
-    .eq('movieID', movie.id);
-
-    if (error) {
-      Alert.alert('Error', 'Failed to delete review');
-      return;
-    }
-
-    Alert.alert('Success', 'Review deleted successfully');
-    getReviewsData(); // Refresh reviews
-  }
-
   // Fetch reviews on mount
   useEffect(() => {
     getReviewsData();
@@ -293,7 +268,7 @@
                 <Star strokeWidth={1.5} size={25} color={colors.text} />
                 <View>
                   <Text className="text-base font-bold text-primary">Ratings</Text>
-                  <Text className="text-sm text-foreground">{movie.vote_average || 'N/A'}</Text>
+                  <Text className="text-sm text-foreground">{movieData?.avg_rating ?? '0'}</Text>
                 </View>
               </Card>
             </View>
