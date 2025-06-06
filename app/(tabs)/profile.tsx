@@ -51,7 +51,7 @@ export default function ProfileScreen() {
     };
   getprofileData();
 
-  const updateUserProfile = async () => {
+  const updateUserProfile = async (newProfiledata: any) => {
     const { data: userData, error: userError } = await supabase.auth.getUser();
     if (userError || !userData?.user) {
       Alert.alert('Error', 'Please log in first');
@@ -63,7 +63,7 @@ export default function ProfileScreen() {
     const { data: existingUser, error: checkError } = await supabase
       .from('users')
       .select('id')
-      .eq('username', userdata.username)
+      .eq('username', newProfiledata.username)
       .neq('id', userId)
       .maybeSingle();
 
@@ -78,12 +78,12 @@ export default function ProfileScreen() {
     }
 
     const { error: updateError } = await supabase
-      .from('user')
+      .from('users')
       .update({
-        username: userdata.username,
-        firstname: userdata.firstname,
-        lastname: userdata.lastname,
-        bio: userdata.bio,
+        username: newProfiledata.username,
+        firstname: newProfiledata.firstname,
+        lastname: newProfiledata.lastname,
+        bio: newProfiledata.bio,
       })
       .eq('id', userId);
 
@@ -160,12 +160,12 @@ export default function ProfileScreen() {
           onClose={() => setEditVisible(false)}
           onSave={async (updatedProfile) => {
           setUserData((prev: any) => ({ ...prev, ...updatedProfile }));
-          updateUserProfile();
+          updateUserProfile(updatedProfile);
           }}
           initialProfile={{
             username: userdata?.username ?? '',
-            firstName: userdata?.firstname ?? '',
-            lastName: userdata?.lastname ?? '',
+            firstname: userdata?.firstname ?? '',
+            lastname: userdata?.lastname ?? '',
             bio: userdata?.bio ?? '',
           }}
         />
