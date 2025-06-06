@@ -65,7 +65,7 @@
   const [date, setDate] = useState(new Date().toISOString()); // ISO format for Supabase
 
   // State for movie data
-  const [movieData, setMovieData] = useState<any>(null);
+  const [movieData, setMovieData] = useState<any>();
 
   // Fetch all reviews
   const getReviewsData = async () => {
@@ -127,7 +127,7 @@
 
     Alert.alert('Success', 'Review added!');
 
-       const { data: movieData, error: movieError } = await supabase
+    const { data: movieData, error: movieError } = await supabase
       .from('movie')
       .insert([
         {
@@ -161,13 +161,14 @@
         review_count: count + 1,
       })
       .eq('movieID', movie.id)
+      .single();
     
     if (updateError) {
       Alert.alert('Error', 'Failed to update movie ratings');
       return;
     }
 
-    setMovieData(movieUpdate || null);
+    setMovieData(updatedRating || null);
 
     setContent('');
     setReviewText('');
