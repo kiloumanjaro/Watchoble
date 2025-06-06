@@ -99,7 +99,7 @@ export default function ProfileScreen() {
                 <Text className="text-xl font-semibold">{userdata?.lastname ?? 'user_101'}</Text>
               </View>
               <View className="items-center">
-                <Text className="text-sm text-muted-foreground">Followings</Text>
+                <Text className="text-sm text-muted-foreground">Reviews</Text>
                 <Text className="text-xl font-semibold">3</Text>
               </View>
             </View>
@@ -136,13 +136,6 @@ export default function ProfileScreen() {
           </CardFooter>
         </Card>
       </View>
-
-      <View className="pl-7">
-        <Text className="text-lg font-semibold">Followings</Text>
-        {/* <ScrollView horizontal showsHorizontalScrollIndicator={false}></ScrollView> */}
-      </View>
-
-
     </View>
   );
 }
