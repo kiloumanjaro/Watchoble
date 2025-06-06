@@ -24,6 +24,7 @@ const GITHUB_AVATAR_URI =
 
 export default function ProfileScreen() {
   const [progress, setProgress] = React.useState(78);
+  const [reviewCount, setReviewCount] = useState(0);
   const [userdata, setUserData] = useState<any>();
   const [isEditVisible, setEditVisible] = useState(false);
   const { colors } = useTheme();
@@ -48,6 +49,19 @@ export default function ProfileScreen() {
         return;
       }
       setUserData(data || null);
+
+    const { count, error: review } = await supabase
+      .from('review')
+      .select('*', { count: 'exact', head: true }) 
+      .eq('userID', userId);
+
+      if (review) {
+        Alert.alert('Error', 'Failed to count reviews');
+        return;
+      }
+
+      setReviewCount(count || 0);
+
     };
   getprofileData();
 
@@ -147,7 +161,7 @@ export default function ProfileScreen() {
               </View>
               <View className="items-center">
                 <Text className="text-sm text-muted-foreground">Reviews</Text>
-                <Text className="text-xl font-semibold">3</Text>
+                <Text className="text-xl font-semibold">{reviewCount}</Text>
               </View>
             </View>
           </CardContent>
