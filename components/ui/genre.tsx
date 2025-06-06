@@ -37,39 +37,45 @@ type GenreProps = {
       };
 
     return (
-        <Pressable onPress={handlePress}>
-            <Card className='w-96 h-56 overflow-hidden rounded-xl m-3 p-0'>
-                <ImageBackground
-                    source={image}
-                    resizeMode="cover"
-                    style={{ flex: 1, justifyContent: 'space-between', padding: 20 }}
-                >
-                    { /* Gradient Behind */ }
-                    <LinearGradient
-                        colors={['transparent', 'rgba(0,0,0,0.8)']}
-                        style={styles.gradient}
-                    />
-
-                    {/* Top Right Menu */}
-                    <View className='items-end' style={{ zIndex: 2 }}>
-                        <Menu>
-                        <MenuTrigger>
-                            <Ellipsis size={30} color={colors.primary} />
-                        </MenuTrigger>
+    <Pressable onPress={handlePress}>
+        <Card className='w-96 h-56 overflow-hidden rounded-xl m-3 p-0'>
+            <ImageBackground
+                source={image}
+                resizeMode="cover"
+                style={{ flex: 1, justifyContent: 'space-between', padding: 20 }}
+            >
+                {/* Top Right Menu */}
+                <View className='items-end' style={{ zIndex: 2 }}>
+                    <Menu>
+                    <MenuTrigger>
+                        <Ellipsis size={30} color={colors.primary} />
+                    </MenuTrigger>
                         <MenuOptions customStyles={menuOptionsStyles}>
-                            {/* Add MenuOption items here */}
+                            <MenuOption onSelect={() => alert('Share pressed')}>
+                                <Text className="text-base px-4 py-2" style={{ color: colors.text }}>Share</Text>
+                            </MenuOption>
+                            <MenuOption onSelect={() => alert('Edit pressed')}>
+                                <Text className="text-base px-4 py-2" style={{ color: colors.text }}>Edit</Text>
+                            </MenuOption>
+                            <MenuOption onSelect={() => alert('Delete pressed')}>
+                                <Text className="text-base px-4 py-2" style={{ color: 'red' }}>Delete</Text>
+                            </MenuOption>
                         </MenuOptions>
-                        </Menu>
-                    </View>
+                    </Menu>
+                </View>
 
-                    {/* Bottom Text Content */}
-                    <View style={{ zIndex: 2 }}>
-                        <Text className='text-sm text-white'>{items} items</Text>
-                        <Text className='text-2xl font-semibold text-white'>{name}</Text>
-                    </View>
-                </ImageBackground>
-            </Card>
-        </Pressable>
+                {/* Bottom Text Content */}
+                <View style={{ zIndex: 2 }}>
+                    <Text className='text-sm text-white'>{items} items</Text>
+                    <Text className='text-2xl font-semibold text-white'>{name}</Text>
+                </View>
+            </ImageBackground>
+            <LinearGradient
+            colors={['transparent', 'rgba(0, 0, 0, 1)']}
+            className="absolute top-0 right-0 bottom-0 left-0"
+            />
+        </Card>
+    </Pressable>
     );
 };
 
