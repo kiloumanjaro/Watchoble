@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_KEY = process.env.TMDB_API_KEY!;
+const API_KEY = process.env.EXPO_PUBLIC_TMDB_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3/trending/person/day";
 const PARAMS = { language: "en-US", page: "1" };
 const HEADERS = {
@@ -15,7 +15,7 @@ export interface Person {
   known_for_department?: string;
 }
 
-const DESIRED_PERSON_COUNT = 10; // You can change this as you want
+const DESIRED_PERSON_COUNT = 10;
 
 export const fetchTrendingPeople = async () => {
   try {
