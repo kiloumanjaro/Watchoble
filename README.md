@@ -18,7 +18,7 @@
   <br />
   <p align="center">
     <br />
-    Track what you watch & discover what to watch next!
+    Track shows & discover like an <em>Iskolar ng Bayan</em>
     <br />
     <br />
     <p align="center">
@@ -38,9 +38,9 @@
   <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#%EF%B8%8F-project-overview">📝 Project Overview</a>
+      <a href="#-project-overview">📝 Project Overview</a>
       <ul>
-        <li><a href="#-built-with">🧱  Built With</a></li>
+        <li><a href="#--built-with">🧱  Built With</a></li>
       </ul>
     </li>
     <li><a href="#-screenshots--features">📱 Screenshots</a></li>
@@ -76,6 +76,10 @@ This project is a modern watchlist app for tracking movies and TV shows you want
 ## 📱 Screenshots & Features
 
 > _For more examples, please refer to the [Documentation](https://www.canva.com/design/DAGpUpNFjQU/L76Qn5GYrCd-QALyc0Armg/view?utm_content=DAGpUpNFjQU&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h646d3d276a)_
+
+<div>
+  <img src="https://github.com/user-attachments/assets/d3a5e5b3-c36a-499c-b49e-b3ae7778f289" width="20%" alt="screenshot" />
+</div>
 
 ## 🚀 Getting Started
 
