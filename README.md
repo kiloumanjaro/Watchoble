@@ -43,7 +43,7 @@
         <li><a href="#--built-with">🧱  Built With</a></li>
       </ul>
     </li>
-    <li><a href="#-screenshots--features">📱 Screenshots</a></li>
+    <li><a href="#-features">📱 Screenshots</a></li>
     <li>
       <a href="#-getting-started">🚀 Getting Started</a>
       <ul>
@@ -73,14 +73,19 @@ This project is a modern watchlist app for tracking movies and TV shows you want
 [![TailwindCSS][Tailwind]][Tailwind-url]
 [![Supabase][Supabase]][Supabase-url]
 
-## 📱 Screenshots & Features
+## 📱 Features
 
 > _For more examples, please refer to the [Documentation](https://www.canva.com/design/DAGpUpNFjQU/L76Qn5GYrCd-QALyc0Armg/view?utm_content=DAGpUpNFjQU&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h646d3d276a)_
 
-<div>
-  <img src="https://github.com/user-attachments/assets/d3a5e5b3-c36a-499c-b49e-b3ae7778f289" width="20%" alt="screenshot" />
+<div style="display: flex; gap: 10px; align-items: flex-start;">
+  <img src="https://github.com/user-attachments/assets/b8d22c4b-219e-4eb9-a5b9-dfffa8a668ae" width="20%" alt="login-reduced" />
+  <img src="https://github.com/user-attachments/assets/3bc65412-91cf-43ce-8f05-134cade730a5" width="20%" alt="pages-reduced" />
+  <img src="https://github.com/user-attachments/assets/3982c165-a704-4b16-9008-888d386a1895" width="20%" alt="search-reduced" />
 </div>
 
+
+
+  
 ## 🚀 Getting Started
 
 Follow these steps to get Watchoble running on your local machine.
@@ -126,6 +131,10 @@ Edit the `.env` file with your configuration (API keys, database URL, etc.)
 npx expo start
 ```
 
+> [!WARNING]
+> 
+> The app is built on [SDK 52](https://expo.dev/blog/upgrading-to-expo-sdk-52) and will not work on other versions
+
 ## 📝 Notes
 
 - Make sure you have the Expo CLI installed globally: `npm install -g @expo/cli`
@@ -152,7 +161,7 @@ Don't forget to give the project a star! Thanks again!
 
 ## ⚖️ License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the Apache-2.0 License - see the [LICENSE](LICENSE) file for details.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
