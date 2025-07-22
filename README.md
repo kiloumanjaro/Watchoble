@@ -80,7 +80,7 @@ This project is a modern watchlist app for tracking movies and TV shows you want
 <div style="display: flex; gap: 10px; align-items: flex-start;">
   <img src="https://github.com/user-attachments/assets/b8d22c4b-219e-4eb9-a5b9-dfffa8a668ae" width="24.5%" alt="login-reduced" />
   <img src="https://github.com/user-attachments/assets/3bc65412-91cf-43ce-8f05-134cade730a5" width="24.5%" alt="pages-reduced" />
-  <img src="https://github.com/user-attachments/assets/46cea2fe-7a3d-4bc4-b32d-39f24bffa109" width="24.5%" alt="edit-reduced" />
+  <img src="https://github.com/user-attachments/assets/64f39f77-75a8-4664-ad15-3e0351ae57c2" width="24.5%" alt="edit-reduced" />
   <img src="https://github.com/user-attachments/assets/8f6b02b7-de9d-42c9-904c-eda5d2434288" width="24.5%" alt="search-reduced" />
 
   
@@ -179,7 +179,7 @@ This project is licensed under the Apache-2.0 License - see the [LICENSE](LICENS
 [issues-shield]: https://img.shields.io/github/issues/kiloumanjaro/Watchoble.svg?style=for-the-badge
 [issues-url]: https://github.com/kiloumanjaro/Watchoble/issues
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://www.linkedin.com/in/kiloumanjaro/overlay/urn:li:fsd_profileProject:(ACoAAFzjJQAB9x0aScdtku_x1uEPQArwlLGW7CQ,653859170)/skill-associations-details/
+[linkedin-url]: https://www.linkedin.com/in/kiloumanjaro/overlay/urn:li:fsd_profileProject:(ACoAAFzjJQAB9x0aScdtku_x1uEPQArwlLGW7CQ,783252815)/skill-associations-details
 [product-screenshot]: images/screenshot.png
 [Expo]: https://img.shields.io/badge/Expo-202425?style=for-the-badge&logo=expo&logoColor=white
 [Expo-url]: https://expo.dev/
