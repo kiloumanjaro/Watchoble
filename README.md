@@ -31,11 +31,6 @@
           src="https://img.shields.io/github/last-commit/kiloumanjaro/Watchoble?color=coral&logo=git&logoColor=white"
         />
       </a>
-
-    </p>
-    <a href="https://github.com/kiloumanjaro/Watchoble/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
-    &middot;
-    <a href="https://github.com/kiloumanjaro/Watchoble/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
   </p>
 </div>
 
