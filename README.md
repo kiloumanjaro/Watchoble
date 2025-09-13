@@ -25,7 +25,13 @@
       <a href="#"><img alt="Status" src="https://img.shields.io/badge/status-Beta-yellow?style=flat&color=yellow" /></a>
       <a href="https://www.figma.com/design/Wphx1EKR0eY2Io0gokTvyn/ThriftNotice?node-id=0-1&t=GhaLetxFdu1aiIcZ-1"><img alt="Figma" src="https://img.shields.io/badge/Figma-Watchoble-FE5196?logo=figma&style=flat" /></a>
       <a href="https://www.python.org"><img alt="SDK Versions" src="https://img.shields.io/badge/SDK-52-A4C639?logo=android&logoColor=white" /></a>
-      <a href="https://github.com/kiloumanjaro/Watchoble/commits/main"><img alt="Last commit" src="https://proxy.cyb3rko.de/shields/github/last-commit/cyb3rko/flashdim?color=coral&logo=git&logoColor=white"/</a>
+      <a href="https://github.com/kiloumanjaro/Watchoble?tab=readme-ov-file">
+        <img 
+          alt="Last commit" 
+          src="https://img.shields.io/github/last-commit/kiloumanjaro/Watchoble?color=coral&logo=git&logoColor=white"
+        />
+      </a>
+
     </p>
     <a href="https://github.com/kiloumanjaro/Watchoble/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     &middot;
